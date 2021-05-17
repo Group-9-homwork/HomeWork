@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1216</width>
+    <width>1299</width>
     <height>709</height>
    </rect>
   </property>
@@ -326,6 +326,13 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QPushButton" name="remark_pB_save">
+              <property name="text">
+               <string>保存</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
@@ -419,7 +426,18 @@
                </layout>
               </item>
               <item>
-               <widget class="QListWidget" name="remark_lW_list"/>
+               <widget class="QTableWidget" name="remark_lW_list">
+                <column>
+                 <property name="text">
+                  <string>评论内容</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>标注</string>
+                 </property>
+                </column>
+               </widget>
               </item>
              </layout>
             </item>
