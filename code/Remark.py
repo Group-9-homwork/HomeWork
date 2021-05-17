@@ -45,6 +45,7 @@ class RemarkModule:
             self.ui.remark_lW_list.setHorizontalHeaderItem(i+1, item)
 
     # 文件选择获取路径，根据路径打开csv按列每行到list,list每行模板， list->csv
+
     def commentInit(self):
         #commentFilePath = self.ui.remark_lE_path.text()
         commentFilePath = './data.csv'
@@ -52,7 +53,6 @@ class RemarkModule:
         with open(commentFilePath, 'r') as f:
             reader = csv.reader(f)
             for i in reader:
-                #new_comment = i[1][0:50]
                 new_comment = i[1]
                 curRow = self.ui.remark_lW_list.rowCount()
                 self.ui.remark_lW_list.insertRow(curRow)
@@ -69,15 +69,13 @@ class RemarkModule:
         with open(commentFilePath, 'w+', newline='') as f:
             writer = csv.writer(f)
             for row in range(self.ui.remark_lW_list.rowCount()):
-                row_data = []
+                row_data = ['']
                 for column in range(self.ui.remark_lW_list.columnCount()):
                     item = self.ui.remark_lW_list.item(row, column)
                     #rowdata.append(unicode(item.text()).encode('utf8'))
                     row_data.append(item.text())
                 writer.writerow(row_data)
-
-                #f.write(f'{row_data[0]},{row_data[1]}\n')
-        print("保存成功")
+        #print("保存成功")
 
     def remarkStart(self):
         # 添加信号和槽。
