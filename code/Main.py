@@ -19,9 +19,8 @@ if __name__ == '__main__':
     label = LabelModule(ui)
     label.labelStart()
 
-    remark = RemarkModule(ui,"./test_data.json")
+    remark = RemarkModule(ui, "./test_data.json")
     remark.remarkStart()
-
 
     '''LabelClassInit(ui)
     AnnotationInit(ui)
