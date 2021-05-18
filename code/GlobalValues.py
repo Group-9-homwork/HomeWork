@@ -1,7 +1,7 @@
 
 def _init():
     global _global_dict
-    _global_dict = {}
+    _global_dict = {'filePath': './data.csv'}
 
 def set_value(name, value):
     _global_dict[name] = value
