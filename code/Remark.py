@@ -2,13 +2,10 @@ import json
 from tkinter import *
 import tkinter.filedialog
 import csv
-<<<<<<< HEAD
-=======
 
 from PyQt5 import QtWidgets
->>>>>>> f708840a4190ea558a07312dc9e0052a542d36cd
-from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QTableWidgetItem, QFileDialog
 
+from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QTableWidgetItem, QFileDialog
 
 def read_json(file_path):
     with open(file_path, 'r') as f:
