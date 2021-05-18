@@ -4,8 +4,8 @@ import tkinter.filedialog
 import csv
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QTableWidgetItem, QFileDialog
 
+from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QTableWidgetItem, QFileDialog
 
 def read_json(file_path):
     with open(file_path, 'r') as f:
