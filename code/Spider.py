@@ -7,8 +7,8 @@ import pandas as pd
 import threading
 import os
 
-from File import FileIO
-import GlobalValues as gv
+from code.File import FileIO
+import code.GlobalValues as gv
 from PyQt5.QtWidgets import QFileDialog
 
 class SpiderModule:
@@ -85,14 +85,19 @@ class SpiderModule:
         print(self.stock)
         print(self.filePath)
 
+        print(222)
+
         # 更新全局变量
-        gv.set_value("stock", self.stock)
+        '''gv.set_value("stock", self.stock)
+        print(111)
         gv.set_value("filePath", self.filePath)
         print(gv.get_value('stock'))
-        print(gv.get_value('filePath'))
+        print(gv.get_value('filePath'))'''
+
+
 
         # 提取出时间，用来防止重复读，这里排序下感觉会更好
-        if not os.path.exists(self.filePath) or os.stat(self.filePath).st_size == 0:
+        if not os.path.exists(self.filePath):
             # self.commentData = pd.DataFrame()
             self.commentTime = []
         else:
