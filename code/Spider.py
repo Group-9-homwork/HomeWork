@@ -72,11 +72,13 @@ class SpiderModule:
         '''停止爬虫'''
         self.flag = 0
 
-    def startCrawler(self):
+    def startCrawler(self, flag):
         '''开始爬虫'''
         # 获取界面输入
         self.stock = self.ui.spi_lE_stock.text()
         self.filePath = self.ui.spi_lE_path.text()
+        print(self.stock)
+        print(self.filePath)
 
         # 这里应该对输入格式进行判断!!!!!!
         if '' == self.stock or '' == self.filePath:
@@ -110,7 +112,8 @@ class SpiderModule:
         '''thread1 = threading.Thread()
         thread1.start(target = parse)'''
         self.parse()
-
+        flag = 1
+        return flag
     '''def display(self, content):
         self.ui.spi_tB_message.append("第" + "条")
         self.ui.spi_tB_message.ensureCursorVisible()
@@ -222,6 +225,7 @@ class SpiderModule:
             print(content.text)
         # 写入文件
         self.fileio.writeCsv(self.filePath, dataDict)  # 路径和字典参数
+        return contents
 
 
 class Content():
