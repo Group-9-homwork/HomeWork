@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1216</width>
+    <width>1299</width>
     <height>709</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="iconSize">
        <size>
@@ -42,7 +42,7 @@
              <number>30</number>
             </property>
             <property name="rightMargin">
-             <number>500</number>
+             <number>400</number>
             </property>
             <item>
              <layout class="QVBoxLayout" name="spi_vL_3">
@@ -109,9 +109,23 @@
              </layout>
             </item>
             <item>
+             <widget class="QPushButton" name="spi_pB_open">
+              <property name="text">
+               <string>打开</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="spi_pB_yes">
               <property name="text">
-               <string>确认</string>
+               <string>开始</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="spi_pB_stop">
+              <property name="text">
+               <string>暂停</string>
               </property>
              </widget>
             </item>
@@ -319,6 +333,13 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QPushButton" name="remark_pB_save">
+              <property name="text">
+               <string>保存</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
@@ -412,7 +433,18 @@
                </layout>
               </item>
               <item>
-               <widget class="QListWidget" name="remark_lW_list"/>
+               <widget class="QTableWidget" name="remark_lW_list">
+                <column>
+                 <property name="text">
+                  <string>评论内容</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>标注</string>
+                 </property>
+                </column>
+               </widget>
               </item>
              </layout>
             </item>
@@ -435,13 +467,13 @@
           <item>
            <layout class="QHBoxLayout" name="ana_hL_3">
             <property name="rightMargin">
-             <number>700</number>
+             <number>563</number>
             </property>
             <item>
              <widget class="QLabel" name="ana_l_open">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                <horstretch>0</horstretch>
+                <horstretch>1</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
@@ -459,14 +491,14 @@
             <item>
              <widget class="QLineEdit" name="ana_lE_path">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
               <property name="minimumSize">
                <size>
-                <width>250</width>
+                <width>39</width>
                 <height>0</height>
                </size>
               </property>
@@ -477,8 +509,27 @@
             </item>
             <item>
              <widget class="QPushButton" name="ana_pB_open">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
                <string>打开</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="ana_pB_yes">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>确认</string>
               </property>
              </widget>
             </item>
@@ -544,93 +595,39 @@
           </item>
           <item>
            <layout class="QHBoxLayout" name="ana_hL_5">
-            <item>
-             <widget class="QLabel" name="ana_l_pie">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>400</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>饼状图</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QListWidget" name="ana_lW_message"/>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <spacer name="ana_vS_4">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
+            <property name="leftMargin">
+             <number>160</number>
             </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+            <property name="topMargin">
+             <number>0</number>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="ana_hL_6">
             <property name="rightMargin">
-             <number>700</number>
+             <number>160</number>
             </property>
             <item>
-             <widget class="QLabel" name="ana_l_save">
+             <layout class="QHBoxLayout" name="ana_hL_7">
+              <property name="spacing">
+               <number>27</number>
+              </property>
+              <item>
+               <widget class="QWidget" name="widget" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                  <horstretch>100</horstretch>
+                  <verstretch>20</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QTextBrowser" name="ana_tB_static">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>89</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>保存路径：</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="ana_lE_savepath">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>250</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="placeholderText">
-               <string>例如：D:/data/data.csv</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="ana_pB_yes">
-              <property name="text">
-               <string>确认</string>
               </property>
              </widget>
             </item>
