@@ -3,10 +3,10 @@ from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QMessageBox, QDial
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
-from File import FileIO
-import inputDia
+from code.File import FileIO
+import code.inputDia as inputDia
 import pandas as pd
-import GlobalValues as gv
+import code.GlobalValues as gv
 
 class LabelModule():
     def __init__(self, ui):
@@ -41,7 +41,8 @@ class LabelModule():
 
     def initData(self):
         # 读取数据
-        self.filePath = gv.get_value('filePath')
+        # self.filePath = gv.get_value('filePath')
+        self.filePath = './data.csv'
         self.commentData = pd.read_csv(self.filePath)
         # print(self.commentData)
 
