@@ -1,3 +1,4 @@
+import codecs
 import json
 from tkinter import *
 import tkinter.filedialog
@@ -32,6 +33,8 @@ class RemarkModule:
         self.ui = ui
         self.filePath = file_path
         self.LabelClassDict = {}
+        self.time = {}
+        self.columns = {}
         self.getLabel()
         self.load_label_ComboBox()
         self.TableInit()
@@ -51,10 +54,12 @@ class RemarkModule:
 
     def commentInit(self):
         #commentFilePath = self.ui.remark_lE_path.text()
-        commentFilePath = './data1.csv'
-        df = pd.read_csv(commentFilePath)
+        commentFilePath = './data.csv'
+        df = pd.read_csv(commentFilePath, encoding="utf-8")
         self.time = df['时间'].tolist()
+        self.columns = df.columns.tolist()
         print(self.time)
+        print(self.columns)
         del df['时间']
         for i in range(df.shape[0]):
             new_comment = df.iloc[i].tolist()
@@ -105,10 +110,11 @@ class RemarkModule:
 
         # commentFilePath = self.ui.remark_lE_path.text()
         commentFilePath = './data1.csv'
-        with open(commentFilePath, 'w+', newline='') as f:
+        with codecs.open(commentFilePath, 'w+', encoding='utf-8') as f:
             writer = csv.writer(f)
+            writer.writerow(self.columns)
             for row in range(self.ui.remark_lW_list.rowCount()):
-                row_data = ['']
+                row_data = [self.time[row]]
                 for column in range(self.ui.remark_lW_list.columnCount()):
                     item = self.ui.remark_lW_list.item(row, column)
                     #rowdata.append(unicode(item.text()).encode('utf8'))
