@@ -18,17 +18,17 @@ class AnalyzeModule():
     def __init__(self, ui):
         self.ui = ui
         self.jsonIO = FileIO()
-        self.initData()
+        self.initData(flag=0)
         # 画图窗口初始化
         self.myF = myFigure(width=3, height=2, dpi=100)
         self.ui.ana_hL_7.addWidget(self.myF)
         # 初始化的画图
-        self.chooseClass()
+        # self.chooseClass(flag=0)
         # self.figure = plt.figure()
         # self.canvas = FigureCanvas(self.figure)
         # self.ui.ana_hL_5.addWidget(self.canvas)
 
-    def initData(self):
+    def initData(self, flag):
         '''初始化数据'''
         # 获取默认路径
         '''self.ui.ana_lE_path.setText(gv.get_value('filePath'))
@@ -70,15 +70,23 @@ class AnalyzeModule():
         # 下拉框控件的初始化
         for keys in self.LabelClassDict.keys():
             self.ui.ana_cB_class.addItem(keys)
+        flag = 1
+        print(1111)
+        return flag
 
     def analyzeStart(self):
         '''添加信号和槽'''
+        flag = 0
         self.ui.ana_cB_class.currentIndexChanged.connect(self.chooseClass)
         self.ui.tabWidget.currentChanged.connect(self.initData)   # 绑定标签点击时的信号与槽函数
         self.ui.ana_pB_yes.clicked.connect(self.initData)
         self.ui.ana_pB_open.clicked.connect(self.openFile)
 
+        flag = 1
+        return flag
+
     def openFile(self):
+        flag = 0
         self.filePath, _ = QFileDialog.getOpenFileName(
             None,  # 父窗口对象
             "打开文件",  # 标题
@@ -86,9 +94,12 @@ class AnalyzeModule():
             "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
         )
         self.ui.ana_lE_path.setText(self.filePath)
+        flag = 1
+        return flag
 
     def chooseClass(self):
         '''根据标签类画图'''
+        flag = 0
         # 画图
         plt.rcParams['font.sans-serif'] = ['simhei']  # 这里是matplotlib支持中文标签的方法
         plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示错误的问题
@@ -97,6 +108,7 @@ class AnalyzeModule():
 
         # 初始化参数
         testChoose = self.ui.ana_cB_class.currentText()
+        print('w' + testChoose)
         if '' == testChoose:
             return None
         print('当前标签类是：' + testChoose)
@@ -119,6 +131,8 @@ class AnalyzeModule():
         self.ui.ana_tB_static.moveCursor(self.ui.cursor.End)  # 光标移到最后，这样就会自动显示出来
         QApplication.processEvents()  # 一定加上这个功能，不然有卡顿
         self.ui.ana_tB_static.ensureCursorVisible()
+        flag = 1
+        return flag
 
 
 # 作图类
