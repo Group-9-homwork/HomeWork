@@ -14,7 +14,7 @@ class LabelModule():
         # 读取json文件来初始化
         self.jsonIO = FileIO()
         self.LabelClassDict = self.jsonIO.readJson()  # 存储标签类和标签的字典，‘标签类：[标签]’
-
+        print(self.LabelClassDict)
         # 增加类和标签的输入
         self.inputDia = inputDiaClass()  # 子窗口
         # self.diaLabel = inputDiaClass()  # 标签
