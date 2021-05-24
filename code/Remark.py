@@ -111,7 +111,7 @@ class RemarkModule:
     def commentSave(self):
 
         # commentFilePath = self.ui.remark_lE_path.text()
-        commentFilePath = './data1.csv'
+        commentFilePath = './data.csv'
         with codecs.open(commentFilePath, 'w+', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(self.columns)
@@ -141,10 +141,14 @@ class RemarkModule:
     def initLabel(self):
 
         self.getLabel()
-        print(222)
         self.ui.remark_cB_class.clear()
-        print(111)
         self.load_label_ComboBox()
+
+        # self.remark_lW_list.clearContents()
+        # self.remark_lW_list.setRowCount(0)
+        self.TableInit()
+        self.commentInit()
+
 
     def getLabel(self):
         self.LabelClassDict = read_json(self.filePath)
