@@ -40,7 +40,7 @@ class RemarkModule:
         self.getLabel()
         self.load_label_ComboBox()
         self.TableInit()
-
+        self.ui.remark_lE_path.setText('./data.csv')
         # print(self.LabelClassDict)
 
     def TableInit(self):
@@ -55,8 +55,9 @@ class RemarkModule:
     # 文件选择获取路径，根据路径打开csv按列每行到list,list每行模板， list->csv
 
     def commentInit(self):
-        # commentFilePath = self.ui.remark_lE_path.text()
-        commentFilePath = './data.csv'
+        self.ui.remark_lW_list.setRowCount(0)
+        commentFilePath = self.ui.remark_lE_path.text()
+        #commentFilePath = './data.csv'
         df = pd.read_csv(commentFilePath, encoding="utf-8")
         self.time = df['时间'].tolist()
         self.columns = df.columns.tolist()
@@ -70,48 +71,27 @@ class RemarkModule:
             curRow = self.ui.remark_lW_list.rowCount()
             self.ui.remark_lW_list.insertRow(curRow)
             print(111)
-            for j in range(len(new_comment)):
+            for j in range(self.ui.remark_lW_list.columnCount()):
                 print(new_comment[j])
-                self.ui.remark_lW_list.setItem(curRow, j, QTableWidgetItem(new_comment[j]))
+                if j < len(new_comment):
+                    self.ui.remark_lW_list.setItem(curRow, j, QTableWidgetItem(new_comment[j]))
+                else:
+                    self.ui.remark_lW_list.setItem(curRow, j, QTableWidgetItem("待标注"))
 
-        '''
-        #print(df)
-        n = self.LabelClassDict.__len__()
-        for i in df:
-            print(124)
-            new_comment = i[1]
-            print(new_comment)
-            curRow = self.ui.remark_lW_list.rowCount()
-            self.ui.remark_lW_list.insertRow(curRow)
-            self.ui.remark_lW_list.setItem(curRow, 0, QTableWidgetItem(new_comment))
-            for k in range(n):
-                self.ui.remark_lW_list.setItem(curRow, k + 1, QTableWidgetItem('待标注'))
-        
-        n = self.LabelClassDict.__len__()
-
-        print(111)
-        with open(commentFilePath, 'r') as f:
-            print(121)
-            reader = csv.reader(f)
-            print(reader)
-            print(123)
-            for i in reader:
-                print(124)
-                new_comment = i[1]
-                print(new_comment)
-                curRow = self.ui.remark_lW_list.rowCount()
-                self.ui.remark_lW_list.insertRow(curRow)
-                self.ui.remark_lW_list.setItem(curRow, 0, QTableWidgetItem(new_comment))
-                for k in range(n):
-                    self.ui.remark_lW_list.setItem(curRow, k+1, QTableWidgetItem('待标注'))
-                    #self.ui.remark_lW_list.setItem(curRow, k + 1, QTableWidgetItem(i[k+2]))
-                    #此行代码为导入csv文件中的“标注”
-'''
+    def openFile(self):
+        flag = 0
+        self.filePath, _ = QFileDialog.getOpenFileName(
+            None,  # 父窗口对象
+            "打开文件",  # 标题
+            "./",  # 起始目录
+            "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
+        )
+        self.ui.remark_lE_path.setText(self.filePath)
 
     def commentSave(self):
 
-        # commentFilePath = self.ui.remark_lE_path.text()
-        commentFilePath = './data.csv'
+        commentFilePath = self.ui.remark_lE_path.text()
+        #commentFilePath = './data.csv'
         with codecs.open(commentFilePath, 'w+', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(self.columns)
@@ -130,7 +110,7 @@ class RemarkModule:
         self.ui.remark_pB_open.clicked.connect(self.commentInit)
         self.ui.remark_pB_save.clicked.connect(self.commentSave)
 
-        self.ui.tabWidget.currentChanged.connect(self.initLabel)  # 绑定标签点击时的信号与槽函数
+        self.ui.tabWidget.currentChanged.connect(self.initLabel)  # 绑定TAB标签点击时的信号与槽函数
 
         self.ui.ann_pB_pre.clicked.connect(self.load_previous_remark)  # 绑定上一个按钮
         self.ui.ann_pB_next.clicked.connect(self.load_next_remark)  # 绑定下一个按钮
@@ -172,16 +152,18 @@ class RemarkModule:
         cur = self.ui.remark_lW_list.currentRow()
         if cur > 0:
             self.ui.remark_lW_message.clear()
-            self.ui.remark_lW_message.addItem(self.ui.remark_lW_list.item(cur - 1, 0).text())
+            self.ui.remark_lW_message.setText(self.ui.remark_lW_list.item(cur - 1, 0).text())
+            #self.ui.remark_lW_message.addItem(self.ui.remark_lW_list.item(cur - 1, 0).text())
             self.ui.remark_lW_list.selectRow(cur - 1)
 
     # 选择下一个评论
     def load_next_remark(self):
         cur = self.ui.remark_lW_list.currentRow()
         total_row = self.ui.remark_lW_list.rowCount()
-        if cur < total_row:
+        if cur < total_row-1:
             self.ui.remark_lW_message.clear()
-            self.ui.remark_lW_message.addItem(self.ui.remark_lW_list.item(cur + 1, 0).text())
+            self.ui.remark_lW_message.setText(self.ui.remark_lW_list.item(cur + 1, 0).text())
+            #self.ui.remark_lW_message.addItem(self.ui.remark_lW_list.item(cur + 1, 0).text())
             self.ui.remark_lW_list.selectRow(cur + 1)
 
     # 显示当前评论
@@ -189,13 +171,14 @@ class RemarkModule:
     def item_click(self, item):
         # print (str(item.text()))
         self.ui.remark_lW_message.clear()
-        self.ui.remark_lW_message.addItem(str(item.text()))
+        #self.ui.remark_lW_message.addItem(str(item.text()))
+        self.ui.remark_lW_message.setText(str(item.text()))
 
     def yes_click(self):
         global CONSTANT
         key_list = []
         count = 0
-        df = pd.read_csv('./data1.csv', encoding='utf-8')
+        #df = pd.read_csv('./data.csv', encoding='utf-8')
         mark = CONSTANT
         cur = self.ui.remark_lW_list.currentRow()
         if cur != -1:
@@ -207,10 +190,12 @@ class RemarkModule:
                 count += 1
                 if test_choose == cols:
                     self.ui.remark_lW_list.setItem(cur, count, QTableWidgetItem(mark))
-                    df[cols].loc[cur] = mark
-                    df.to_csv('./data1.csv', encoding='utf-8')
 
-    def get_label_click(self,item):
+                    #df[cols].loc[cur] = mark
+                    #df.to_csv('./data.csv', encoding='utf-8')
+        self.commentSave()
+
+    def get_label_click(self, item):
         global CONSTANT
         CONSTANT = item.text()
 
