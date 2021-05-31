@@ -80,13 +80,13 @@ class RemarkModule:
 
     def openFile(self):
         flag = 0
-        self.filePath, _ = QFileDialog.getOpenFileName(
+        FilePath, _ = QFileDialog.getOpenFileName(
             None,  # 父窗口对象
             "打开文件",  # 标题
             "./",  # 起始目录
             "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
         )
-        self.ui.remark_lE_path.setText(self.filePath)
+        self.ui.remark_lE_path.setText(FilePath)
 
     def commentSave(self):
 
@@ -108,12 +108,13 @@ class RemarkModule:
         # 添加信号和槽。#将ui中的控件与自定义函数连接
         self.ui.remark_cB_class.currentIndexChanged.connect(self.comboBox_label_choose)
         self.ui.remark_pB_open.clicked.connect(self.commentInit)
-        self.ui.remark_pB_save.clicked.connect(self.commentSave)
+        self.ui.remark_pB_save.clicked.connect(self.openFile)
 
         self.ui.tabWidget.currentChanged.connect(self.initLabel)  # 绑定TAB标签点击时的信号与槽函数
 
         self.ui.ann_pB_pre.clicked.connect(self.load_previous_remark)  # 绑定上一个按钮
         self.ui.ann_pB_next.clicked.connect(self.load_next_remark)  # 绑定下一个按钮
+        self.ui.pushButton.clicked.connect(self.commentDelete)#绑定删除按钮
         self.ui.remark_lW_list.itemClicked.connect(self.item_click)  # 绑定列表点击
         self.ui.ann_pB_yes.clicked.connect(self.yes_click)  # 绑定列表点击
         self.ui.remark_lW_label.itemClicked.connect(self.get_label_click)  # 绑定列表点击
@@ -146,6 +147,13 @@ class RemarkModule:
             self.ui.remark_lW_label.clear()
             new_label = self.LabelClassDict[test_choose]
             self.ui.remark_lW_label.addItems(new_label)
+
+    #删除按钮
+    def commentDelete(self):
+        curRow = self.ui.remark_lW_list.currentRow()
+        curCol = self.ui.remark_lW_list.currentColumn()
+        self.ui.remark_lW_list.setItem(curRow, curCol, QTableWidgetItem("待标注"))
+        self.commentSave()
 
     # 选择上一个评论
     def load_previous_remark(self):
