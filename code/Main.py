@@ -7,6 +7,7 @@ from Label import LabelModule
 from Remark import RemarkModule
 from Analyze import AnalyzeModule
 import GlobalValues as gv
+from code.Manage import ManageModule
 
 if __name__ == '__main__':
     # UI界面
@@ -29,5 +30,8 @@ if __name__ == '__main__':
     # 分析模块
     analyze = AnalyzeModule(ui)
     analyze.analyzeStart()
+    #管理模块
+    manage = ManageModule(ui, "./test_data.json")
+    manage.manageStart()
 
     sys.exit(app.exec_())
