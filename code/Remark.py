@@ -181,10 +181,11 @@ class RemarkModule:
 
     def item_click(self, item):
         # print (str(item.text()))
+        cur = self.ui.remark_lW_list.currentRow()
         self.ui.remark_lW_message.clear()
         #self.ui.remark_lW_message.addItem(str(item.text()))
         print(item.text)
-        self.ui.remark_lW_message.setText(str(item.text()))
+        self.ui.remark_lW_message.setText(self.ui.remark_lW_list.item(cur, 0).text())
 
     def yes_click(self):
         global CONSTANT

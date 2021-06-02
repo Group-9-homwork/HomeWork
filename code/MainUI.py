@@ -402,7 +402,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addLayout(self.ann_hL_3)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.remark_lW_message_2 = QtWidgets.QListWidget(self.tab)
+        self.remark_lW_message_2 = QtWidgets.QTextBrowser(self.tab)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

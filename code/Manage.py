@@ -269,9 +269,11 @@ class ManageModule:
 
     def item_click(self, item):
         # print (str(item.text()))
+        cur = self.ui.remark_lW_list_2.currentRow()
         self.ui.remark_lW_message_2.clear()
         # self.ui.remark_lW_message.addItem(str(item.text()))
-        self.ui.remark_lW_message_2.addItem(item.text())
+        #self.ui.remark_lW_message_2.addItem(item.text())
+        self.ui.remark_lW_message_2.setText(self.ui.remark_lW_list_2.item(cur, 0).text())
 
 
     def yes_click(self):
