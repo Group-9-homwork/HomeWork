@@ -87,8 +87,6 @@ class SpiderModule:
         print(self.stock)
         print(self.filePath)
 
-        print(222)
-
         # 更新全局变量
         '''gv.set_value("stock", self.stock)
         print(111)
