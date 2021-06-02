@@ -9,6 +9,7 @@ from Analyze import AnalyzeModule
 import GlobalValues as gv
 from code.Manage import ManageModule
 
+
 if __name__ == '__main__':
     # UI界面
     app = QApplication(sys.argv)
