@@ -64,7 +64,7 @@ class ManageModule:
             item.setText(list(self.LabelClassDict.keys())[i] + '2')
             self.ui.remark_lW_list_2.setHorizontalHeaderItem(3*i + 2, item)
             item = QtWidgets.QTableWidgetItem()
-            item.setText(list(self.LabelClassDict.keys())[i] + '3')
+            item.setText(list(self.LabelClassDict.keys())[i] )
             self.ui.remark_lW_list_2.setHorizontalHeaderItem(3*i + 3, item)
             print(3)
 
@@ -202,8 +202,8 @@ class ManageModule:
 
         self.ui.tabWidget.currentChanged.connect(self.initLabel)  # 绑定TAB标签点击时的信号与槽函数
 
-        self.ui.ann_pB_pre_3.clicked.connect(self.load_previous_remark)  # 绑定上一个按钮
-        self.ui.ann_pB_pre_2.clicked.connect(self.load_next_remark)  # 绑定下一个按钮
+        #self.ui.ann_pB_pre_3.clicked.connect(self.load_previous_remark)  # 绑定上一个按钮
+        #self.ui.ann_pB_pre_2.clicked.connect(self.load_next_remark)  # 绑定下一个按钮
         self.ui.ann_pB_next_2.clicked.connect(self.commentDelete)  # 绑定删除按钮
         self.ui.remark_lW_list_2.itemClicked.connect(self.item_click)  # 绑定列表点击
         self.ui.ann_pB_yes_2.clicked.connect(self.yes_click)  # 绑定列表点击
@@ -225,6 +225,8 @@ class ManageModule:
 
     # 读取标签类选择选项
     def load_label_ComboBox(self):
+        first = ''
+        self.ui.remark_cB_class_2.addItem(first)
         for keys in self.LabelClassDict.keys():
             self.ui.remark_cB_class_2.addItem(keys)
 
@@ -269,7 +271,8 @@ class ManageModule:
         # print (str(item.text()))
         self.ui.remark_lW_message_2.clear()
         # self.ui.remark_lW_message.addItem(str(item.text()))
-        self.ui.remark_lW_message_2.setText(str(item.text()))
+        self.ui.remark_lW_message_2.addItem(item.text())
+
 
     def yes_click(self):
         global CONSTANT

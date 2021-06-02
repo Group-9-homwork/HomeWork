@@ -136,6 +136,8 @@ class RemarkModule:
 
     # 读取标签类选择选项
     def load_label_ComboBox(self):
+        first=''
+        self.ui.remark_cB_class.addItem(first)
         for keys in self.LabelClassDict.keys():
             self.ui.remark_cB_class.addItem(keys)
 
@@ -147,6 +149,7 @@ class RemarkModule:
             self.ui.remark_lW_label.clear()
             new_label = self.LabelClassDict[test_choose]
             self.ui.remark_lW_label.addItems(new_label)
+
 
     #删除按钮
     def commentDelete(self):
@@ -180,6 +183,7 @@ class RemarkModule:
         # print (str(item.text()))
         self.ui.remark_lW_message.clear()
         #self.ui.remark_lW_message.addItem(str(item.text()))
+        print(item.text)
         self.ui.remark_lW_message.setText(str(item.text()))
 
     def yes_click(self):
