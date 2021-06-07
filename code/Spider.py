@@ -11,7 +11,8 @@ from code.File import FileIO
 import code.GlobalValues as gv
 from PyQt5.QtWidgets import QFileDialog
 
-class SpiderModule:
+
+class SpiderModule():
     def __init__(self, ui):
         self.ui = ui
         self.initArgs()
@@ -96,8 +97,6 @@ class SpiderModule:
         print(gv.get_value('stock'))
         print(gv.get_value('filePath'))'''
 
-
-
         # 提取出时间，用来防止重复读，这里排序下感觉会更好
         if not os.path.exists(self.filePath):
             # self.commentData = pd.DataFrame()
@@ -114,6 +113,7 @@ class SpiderModule:
         self.parse()
         flag = 1
         return flag
+
     '''def display(self, content):
         self.ui.spi_tB_message.append("第" + "条")
         self.ui.spi_tB_message.ensureCursorVisible()
@@ -173,15 +173,15 @@ class SpiderModule:
             self.curComment = 1
             while j <= self.pageComment:
                 # userName = page['list'][j]['user']['screen_name']
-                text = page['list'][j-1]['text']
+                text = page['list'][j - 1]['text']
                 # 用正则表达式，过滤掉一些东西
-                text = re.sub('<a.*?</a>','',text)
-                text = re.sub('<.*?>','', text)
+                text = re.sub('<a.*?</a>', '', text)
+                text = re.sub('<.*?>', '', text)
                 text = re.sub('&\w{2}sp;', '', text)
 
                 '''source = page['list'][j]['source']  # 来源'''
 
-                tracks = json.loads(page['list'][j-1]['trackJson'])
+                tracks = json.loads(page['list'][j - 1]['trackJson'])
                 created_at = tracks['created_at']  # 发表评论时间
                 # print(created_at)
                 '''retweet_count = tracks['retweet_count']  # 转发数

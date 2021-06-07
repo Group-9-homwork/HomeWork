@@ -174,6 +174,11 @@ class ManageModule:
                     else:
                         self.ui.remark_lW_list_2.setItem(row, column, QTableWidgetItem("冲突"))
                         self.ui.remark_lW_list_2.item(row, column).setForeground(QBrush(QColor(255, 0, 0)))
+                elif comment1 != comment2:
+                    if self.ui.remark_lW_list_2.item(row, column).text() == '冲突':
+                        self.ui.remark_lW_list_2.item(row, column).setForeground(QBrush(QColor(255, 0, 0)))
+                    else:
+                        self.ui.remark_lW_list_2.item(row, column).setForeground(QBrush(QColor(0, 200,  0)))
 
     def commentSave(self):
         commentFilePath = self.ui.remark_lE_path_2.text()
