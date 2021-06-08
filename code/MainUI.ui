@@ -351,7 +351,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>保存</string>
+               <string>确认</string>
               </property>
              </widget>
             </item>
@@ -413,20 +413,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_3">
               <item>
-               <widget class="QListWidget" name="remark_lW_message">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>795</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </widget>
+               <widget class="QTextBrowser" name="remark_lW_message"/>
               </item>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout">
@@ -458,19 +445,6 @@
                   </property>
                   <property name="text">
                    <string>标注</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton">
-                  <property name="minimumSize">
-                   <size>
-                    <width>60</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>删除</string>
                   </property>
                  </widget>
                 </item>
@@ -512,6 +486,19 @@
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>删除</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </item>
               <item>
@@ -533,18 +520,7 @@
              </layout>
             </item>
             <item>
-             <widget class="QTableWidget" name="remark_lW_list">
-              <column>
-               <property name="text">
-                <string>评论内容</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>标注</string>
-               </property>
-              </column>
-             </widget>
+             <widget class="QTableWidget" name="remark_lW_list"/>
             </item>
            </layout>
           </item>
@@ -776,7 +752,7 @@
                </size>
               </property>
               <property name="text">
-               <string>选择</string>
+               <string>打开</string>
               </property>
              </widget>
             </item>
@@ -789,7 +765,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>保存</string>
+               <string>确认</string>
               </property>
              </widget>
             </item>
@@ -849,20 +825,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <item>
-             <widget class="QListWidget" name="remark_lW_message_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>795</width>
-                <height>0</height>
-               </size>
-              </property>
-             </widget>
+             <widget class="QTextBrowser" name="remark_lW_message_2"/>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -892,25 +855,6 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="ann_pB_next_2">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>50</width>
-                  <height>50</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>删除</string>
-                </property>
-               </widget>
-              </item>
-              <item>
                <widget class="QPushButton" name="ann_pB_pre_2">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
@@ -925,7 +869,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>上一条</string>
+                 <string>下一条</string>
                 </property>
                </widget>
               </item>
@@ -945,6 +889,25 @@
                 </property>
                 <property name="text">
                  <string>上一条</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="ann_pB_next_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>删除</string>
                 </property>
                </widget>
               </item>
@@ -969,18 +932,7 @@
            </layout>
           </item>
           <item>
-           <widget class="QTableWidget" name="remark_lW_list_2">
-            <column>
-             <property name="text">
-              <string>评论内容</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>标注</string>
-             </property>
-            </column>
-           </widget>
+           <widget class="QTableWidget" name="remark_lW_list_2"/>
           </item>
          </layout>
         </item>

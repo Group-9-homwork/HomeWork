@@ -1,14 +1,13 @@
-import os
-import csv
-import json
+import frozen_dir
 from Spider import *
 import pandas as pd
 
 
 class FileIO():
     def __init__(self):
-        self.filePath = './data.csv'
-        self.jsonPath = './test_data.json'
+        self.filePath = frozen_dir.app_path() + '\\data.csv'
+        print(self.filePath)
+        self.jsonPath = frozen_dir.app_path() + '\\LabelClass.json'
 
     def readFile(self, path):
         if path:
@@ -36,9 +35,32 @@ class FileIO():
 
     def readCsv(self, path):
         '''读取csv转为字典'''
-        commentData = pd.read_csv(path)
-        commentData.set_index('ID').T.to_dict('list')
-        pass
+        print(path)
+        # 读取标签数据
+        labelClassDict = self.readJson()
+
+        # 读取原有数据
+        try:
+            oldData = pd.read_csv(path)
+        except pd.errors.EmptyDataError:
+            colLabel = ['时间', '评论'] + list(labelClassDict.keys())
+            oldData = pd.DataFrame(columns=colLabel)
+
+        # if not os.path.exists(path):
+        # else:
+        #    oldData = pd.read_csv(path)
+        print(oldData)
+
+        # 针对原有数据，对修改后的标签进行添加
+        for labelClass in labelClassDict.keys():
+            print(labelClass)
+            print(oldData.columns.values.tolist())
+            if labelClass not in oldData.columns.values.tolist():
+                oldData[labelClass] = '待标注'
+        # 覆盖写回
+        oldData.to_csv(path, index=None)
+
+        return oldData
 
     def writeCsv(self, path, dataDict):
         '''把字典写入csv'''
@@ -47,11 +69,8 @@ class FileIO():
         newData = pd.DataFrame(dataDict)
         print(newData)
 
-        # 添加标签类
+        # 读取标签数据
         labelClassDict = self.readJson()
-        for labelClass in labelClassDict.keys():
-            if labelClass not in newData.columns.values.tolist():
-                newData[labelClass] = '待标注'
 
         # 读取原有数据
         if not os.path.exists(path):
@@ -59,6 +78,16 @@ class FileIO():
         else:
             oldData = pd.read_csv(path)
         print(oldData)
+
+        # 针对原有数据，对修改后的标签进行添加
+        for labelClass in labelClassDict.keys():
+            if labelClass not in oldData.columns.values.tolist():
+                oldData[labelClass] = '待标注'
+
+        # 对新爬取的数据添加列，根据修改后的原有数据添加
+        for labelClass in oldData.columns.values.tolist():
+            if labelClass not in newData.columns.values.tolist():
+                newData[labelClass] = '待标注'
 
         # 合并数据
         data = pd.concat([oldData, newData])
@@ -69,7 +98,7 @@ class FileIO():
     def readJson(self):
         '''读取json文件'''
         # 读取
-        with open('./test_data.json', 'r') as f:  # 判断文件是否存在！！！或者不存在添加
+        with open(self.jsonPath, 'r') as f:  # 判断文件是否存在！！！或者不存在添加
             data = json.load(f)
             # print(type(data))  # dict
             return data
@@ -79,6 +108,6 @@ class FileIO():
         # dict转化成json
         data = json.dumps(dict, indent=4)
         # 保存
-        with open('./test_data.json', 'w') as f:
+        with open(self.jsonPath, 'w') as f:
             f.write(data)
             # json.dump(data, f)
