@@ -26,13 +26,13 @@ if __name__ == '__main__':
     label = LabelModule(ui)
     label.labelStart()
     # 标注模块
-    remark = RemarkModule(ui, "./test_data.json")
+    remark = RemarkModule(ui)
     remark.remarkStart()
     # 分析模块
     analyze = AnalyzeModule(ui)
     analyze.analyzeStart()
     #管理模块
-    manage = ManageModule(ui, "./test_data.json")
+    manage = ManageModule(ui)
     manage.manageStart()
 
     sys.exit(app.exec_())

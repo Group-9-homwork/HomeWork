@@ -3,6 +3,8 @@ import re
 import time
 import json
 from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QMessageBox, QDialog
+from PyQt5.QtCore import Qt
 import pandas as pd
 import threading
 import os
@@ -15,6 +17,7 @@ from PyQt5.QtWidgets import QFileDialog
 class SpiderModule():
     def __init__(self, ui):
         self.ui = ui
+        self.ui.spi_pB_stop.setEnabled(False);
         self.initArgs()
 
     def initArgs(self):
@@ -45,15 +48,17 @@ class SpiderModule():
         self.curComment = 1  # 第几条
         self.curK = 1  # 第几条
         self.fileio = FileIO()  # 文件的读写操作
+        self.noPage = 0  # 页面是否获取
+        self.end = 0  # 是否结束线程爬虫
 
     def spiderStart(self):
         '''添加信号和槽'''
         self.ui.spi_pB_yes.clicked.connect(self.startCrawler)  # 开始爬虫
         self.ui.spi_pB_stop.clicked.connect(self.stopCrawler)  # 停止爬虫
-        # 修改linetext的内容就会发生cur归1
+        # 修改linetext的内容就会发生cur变1
         self.ui.spi_lE_stock.textChanged.connect(self.changeCur)  # 股票代码文本内容改变
         self.ui.spi_lE_path.textChanged.connect(self.changeCur)  # 路径文本内容改变
-        self.ui.spi_pB_open.clicked.connect(self.openFile)
+        self.ui.spi_pB_open.clicked.connect(self.openFile)  # 打开文件
 
     def openFile(self):
         self.filePath, _ = QFileDialog.getOpenFileName(
@@ -68,27 +73,72 @@ class SpiderModule():
         '''文本内容改变就从第一页第一条开始爬'''
         self.curPage = 1
         self.curComment = 1
+        # 终止当前线程！！！
+        self.end = 1
+        self.curK = 1
+        print(1111111)
 
     def stopCrawler(self):
         '''停止爬虫'''
+        # 设置文本输入框为可编辑
+        # self.ui.spi_lE_stock.setFocusPolicy(Qt.Focus)
+        # self.ui.spi_lE_path.setFocusPolicy(Qt.Focus)
+        self.ui.spi_lE_stock.setReadOnly(False)
+        self.ui.spi_lE_path.setReadOnly(False)
+
+        # 设置按钮不可点击
+        self.ui.spi_pB_yes.setEnabled(True);
+        self.ui.spi_pB_open.setEnabled(True);
+        self.ui.spi_pB_stop.setEnabled(False);
+
         self.flag = 0
 
     def startCrawler(self, flag):
         '''开始爬虫'''
+        # 设置文本输入框为不可编辑
+        self.ui.spi_lE_stock.setReadOnly(True)
+        self.ui.spi_lE_path.setReadOnly(True)
+
+        # 设置按钮不可点击
+        self.ui.spi_pB_yes.setEnabled(False);
+        self.ui.spi_pB_open.setEnabled(False);
+        self.ui.spi_pB_stop.setEnabled(True);
+
         # 获取界面输入
         self.stock = self.ui.spi_lE_stock.text()
         self.filePath = self.ui.spi_lE_path.text()
         print(self.stock)
         print(self.filePath)
 
+        try:
+            f = open(self.filePath)
+            f.close()
+        except IOError:
+            QMessageBox.warning(
+                None,
+                '警告',
+                '文件错误，请重新输入路径！')
+            return
+
+        # 正则表达式匹配是否是股票代码和csv文件
+        if not re.search('^[A-Z]{2}[0-9]{6}', self.stock):
+            QMessageBox.warning(
+                None,
+                '警告',
+                '股票代码格式错误，请重新输入！')
+            return
+
+        if not re.search('\.csv$', self.filePath):
+            QMessageBox.warning(
+                None,
+                '警告',
+                '文件类型错误，请选择csv文件！')
+            return
+
         # 这里应该对输入格式进行判断!!!!!!
         if '' == self.stock or '' == self.filePath:
             self.stock = "SH603517"
             self.filePath = "./data.csv"
-        print(self.stock)
-        print(self.filePath)
-
-        print(222)
 
         # 更新全局变量
         '''gv.set_value("stock", self.stock)
@@ -96,6 +146,13 @@ class SpiderModule():
         gv.set_value("filePath", self.filePath)
         print(gv.get_value('stock'))
         print(gv.get_value('filePath'))'''
+
+        # 输出开始爬虫
+        self.ui.spi_tB_message.append('开始爬虫\n股票代码：'+self.stock+'\n当前文件路径：'+self.filePath + '\n')
+        '''self.ui.cursor = ui.spi_tB_message.textCursor()
+        self.ui.spi_tB_message.moveCursor(ui.cursor.End)  # 光标移到最后，这样就会自动显示出来
+        QtWidgets.QApplication.processEvents()  # 一定加上这个功能，不然有卡顿
+        self.ui.spi_tB_message.ensureCursorVisible()'''
 
         # 提取出时间，用来防止重复读，这里排序下感觉会更好
         if not os.path.exists(self.filePath):
@@ -108,9 +165,16 @@ class SpiderModule():
         self.query['symbol'] = self.stock
         self.flag = 1
         # 开启一个线程处理
-        '''thread1 = threading.Thread()
-        thread1.start(target = parse)'''
-        self.parse()
+        t = threading.Thread(target = self.parse)
+        t.start()
+        # t.join()
+        # self.parse()
+        if self.noPage:
+            QMessageBox.warning(
+                None,
+                '警告',
+                '股票代码可能不存在，请仔细检查')
+            self.noPage = 0
         flag = 1
         return flag
 
@@ -152,6 +216,10 @@ class SpiderModule():
             req.raise_for_status()
             page = json.loads(req.text)
         except:
+            QMessageBox.warning(
+                None,
+                '警告',
+                '股票代码可能不存在，请仔细检查')
             print("getPage Error!")
             return None
         return page
@@ -167,6 +235,10 @@ class SpiderModule():
             page = self.getPage(pageUrl)  # 获取页面内容
             # print(page)
             if page == None:
+                self.noPage = 1
+                return []
+            if page['list'] == []:
+                self.noPage = 1
                 return []
 
             j = self.curComment
@@ -225,6 +297,12 @@ class SpiderModule():
             print(content.text)
         # 写入文件
         self.fileio.writeCsv(self.filePath, dataDict)  # 路径和字典参数
+        if 0 == self.flag:
+            self.ui.spi_tB_message.append('爬虫暂停\n')
+            self.ui.cursor = self.ui.spi_tB_message.textCursor()
+            self.ui.spi_tB_message.moveCursor(self.ui.cursor.End)  # 光标移到最后，这样就会自动显示出来
+            QtWidgets.QApplication.processEvents()  # 一定加上这个功能，不然有卡顿
+            self.ui.spi_tB_message.ensureCursorVisible()
         return contents
 
 
