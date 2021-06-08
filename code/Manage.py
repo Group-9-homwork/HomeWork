@@ -7,6 +7,7 @@ import pandas as pd
 import os
 
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QBrush, QColor
 
 from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QTableWidgetItem, QFileDialog
 
@@ -41,6 +42,7 @@ class ManageModule:
         self.getLabel()
         self.load_label_ComboBox()
         self.TableInit()
+        #self.ui.remark_lE_path.setText('./data.csv')
         # print(self.LabelClassDict)
 
     def TableInit(self):
@@ -66,13 +68,8 @@ class ManageModule:
             self.ui.remark_lW_list_2.setHorizontalHeaderItem(3*i + 3, item)
             print(3)
 
-        '''for i in range(len(self.LabelClassDict)):
-            item = QtWidgets.QTableWidgetItem()
-            item.setText(list(self.LabelClassDict.keys())[i])
-            self.ui.remark_lW_list.setHorizontalHeaderItem(i + 1, item)'''
-
-
     # 文件选择获取路径，根据路径打开csv按列每行到list,list每行模板， list->csv
+
     def commentInit(self):
         # 判断三个路径是否全部存在且正确
         filePath1 = self.ui.remark_lE_path_3.text()  # 获取比较文件1的路径
@@ -127,31 +124,7 @@ class ManageModule:
                     self.ui.remark_lW_list_2.setItem(curRow, 3*j-2, QTableWidgetItem("待标注"))
                     self.ui.remark_lW_list_2.setItem(curRow, 3*j-1, QTableWidgetItem("待标注"))
                     self.ui.remark_lW_list_2.setItem(curRow, 3*j, QTableWidgetItem("待标注"))
-
-
-
-        '''self.ui.remark_lW_list.setRowCount(0)
-        commentFilePath = self.ui.remark_lE_path.text()
-        #commentFilePath = './data.csv'
-        df = pd.read_csv(commentFilePath, encoding="utf-8")
-        self.time = df['时间'].tolist()
-        self.columns = df.columns.tolist()
-        print(self.time)
-        print(self.columns)
-        del df['时间']
-        for i in range(df.shape[0]):
-            new_comment = df.iloc[i].tolist()
-            print(new_comment)
-
-            curRow = self.ui.remark_lW_list.rowCount()
-            self.ui.remark_lW_list.insertRow(curRow)
-            print(111)
-            for j in range(self.ui.remark_lW_list.columnCount()):
-                print(new_comment[j])
-                if j < len(new_comment):
-                    self.ui.remark_lW_list.setItem(curRow, j, QTableWidgetItem(new_comment[j]))
-                else:
-                    self.ui.remark_lW_list.setItem(curRow, j, QTableWidgetItem("待标注"))'''
+            self.commentContrast(curRow)
 
 
     def openFile1(self):
@@ -184,51 +157,68 @@ class ManageModule:
         )
         self.ui.remark_lE_path_2.setText(FilePath)
 
+    def commentContrast(self, row):
+        comment1 = ''
+        comment2 = ''
+        for column in range(self.ui.remark_lW_list_2.columnCount()):
+            if column == 0:
+                continue
+            if column % 3 == 1:
+                comment1 = self.ui.remark_lW_list_2.item(row, column).text()
+            if column % 3 == 2:
+                comment2 = self.ui.remark_lW_list_2.item(row, column).text()
+            if column % 3 == 0:
+                if self.ui.remark_lW_list_2.item(row, column).text() == '待标注':
+                    if comment1 == comment2:
+                        self.ui.remark_lW_list_2.setItem(row, column, QTableWidgetItem(comment1))
+                    else:
+                        self.ui.remark_lW_list_2.setItem(row, column, QTableWidgetItem("冲突"))
+                        self.ui.remark_lW_list_2.item(row, column).setForeground(QBrush(QColor(255, 0, 0)))
 
     def commentSave(self):
-        commentFilePath = self.ui.remark_lE_path.text()
-        #commentFilePath = './data.csv'
+        commentFilePath = self.ui.remark_lE_path_2.text()
+        # commentFilePath = './data.csv'
         with codecs.open(commentFilePath, 'w+', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(self.columns)
-            for row in range(self.ui.remark_lW_list.rowCount()):
+            for row in range(self.ui.remark_lW_list_2.rowCount()):
                 row_data = [self.time[row]]
-                for column in range(self.ui.remark_lW_list.columnCount()):
-                    item = self.ui.remark_lW_list.item(row, column)
-                    # rowdata.append(unicode(item.text()).encode('utf8'))
-                    row_data.append(item.text())
+                for column in range(self.ui.remark_lW_list_2.columnCount()):
+                    if column % 3 == 0:
+                        item = self.ui.remark_lW_list_2.item(row, column)
+                        # rowdata.append(unicode(item.text()).encode('utf8'))
+                        row_data.append(item.text())
                 writer.writerow(row_data)
         # print("保存成功")
 
     def manageStart(self):
-        # 添加信号和槽。#将ui中的控件与自定义函数连接
-        # 文件
+        # 文件槽
         self.ui.remark_pB_open_3.clicked.connect(self.openFile1)  # 文件1
         self.ui.remark_pB_open_4.clicked.connect(self.openFile2)  # 文件2
         self.ui.remark_pB_open_2.clicked.connect(self.openFile3)  # 保存的文件
         self.ui.remark_pB_save_2.clicked.connect(self.commentInit)  # 初始化表格
 
+        self.ui.remark_cB_class_2.currentIndexChanged.connect(self.comboBox_label_choose)
 
-        self.ui.remark_cB_class.currentIndexChanged.connect(self.comboBox_label_choose)
         self.ui.tabWidget.currentChanged.connect(self.initLabel)  # 绑定TAB标签点击时的信号与槽函数
 
-        self.ui.ann_pB_pre.clicked.connect(self.load_previous_remark)  # 绑定上一个按钮
-        self.ui.ann_pB_next.clicked.connect(self.load_next_remark)  # 绑定下一个按钮
-        self.ui.remark_lW_list.itemClicked.connect(self.item_click)  # 绑定列表点击
-        self.ui.ann_pB_yes.clicked.connect(self.yes_click)  # 绑定列表点击
-        self.ui.remark_lW_label.itemClicked.connect(self.get_label_click)  # 绑定列表点击
+        self.ui.ann_pB_pre_3.clicked.connect(self.load_previous_remark)  # 绑定上一个按钮
+        self.ui.ann_pB_pre_2.clicked.connect(self.load_next_remark)  # 绑定下一个按钮
+        self.ui.ann_pB_next_2.clicked.connect(self.commentDelete)  # 绑定删除按钮
+        self.ui.remark_lW_list_2.itemClicked.connect(self.item_click)  # 绑定列表点击
+        self.ui.ann_pB_yes_2.clicked.connect(self.yes_click)  # 绑定列表点击
+        self.ui.remark_lW_label_2.itemClicked.connect(self.get_label_click)  # 绑定列表点击
 
     def initLabel(self):
 
         self.getLabel()
-        self.ui.remark_cB_class.clear()
+        self.ui.remark_cB_class_2.clear()
         self.load_label_ComboBox()
 
         # self.remark_lW_list.clearContents()
         # self.remark_lW_list.setRowCount(0)
-        self.TableInit()
-        self.commentInit()
-
+        #self.TableInit()
+        #self.commentInit()
 
     def getLabel(self):
         self.LabelClassDict = read_json(self.filePath)
@@ -236,63 +226,70 @@ class ManageModule:
     # 读取标签类选择选项
     def load_label_ComboBox(self):
         for keys in self.LabelClassDict.keys():
-            self.ui.remark_cB_class.addItem(keys)
+            self.ui.remark_cB_class_2.addItem(keys)
 
     # 选择标签类时，更新标签显示列表
     def comboBox_label_choose(self):
-        test_choose = self.ui.remark_cB_class.currentText()
+        test_choose = self.ui.remark_cB_class_2.currentText()
         print(test_choose)
         if test_choose != "":
-            self.ui.remark_lW_label.clear()
+            self.ui.remark_lW_label_2.clear()
             new_label = self.LabelClassDict[test_choose]
-            self.ui.remark_lW_label.addItems(new_label)
+            self.ui.remark_lW_label_2.addItems(new_label)
+
+    # 删除按钮
+    def commentDelete(self):
+        curRow = self.ui.remark_lW_list_2.currentRow()
+        curCol = self.ui.remark_lW_list_2.currentColumn()
+        self.ui.remark_lW_list_2.setItem(curRow, curCol, QTableWidgetItem("待标注"))
+        self.commentSave()
 
     # 选择上一个评论
     def load_previous_remark(self):
-        cur = self.ui.remark_lW_list.currentRow()
+        cur = self.ui.remark_lW_list_2.currentRow()
         if cur > 0:
-            self.ui.remark_lW_message.clear()
-            self.ui.remark_lW_message.setText(self.ui.remark_lW_list.item(cur - 1, 0).text())
-            #self.ui.remark_lW_message.addItem(self.ui.remark_lW_list.item(cur - 1, 0).text())
-            self.ui.remark_lW_list.selectRow(cur - 1)
+            self.ui.remark_lW_message_2.clear()
+            self.ui.remark_lW_message_2.setText(self.ui.remark_lW_list_2.item(cur - 1, 0).text())
+            # self.ui.remark_lW_message.addItem(self.ui.remark_lW_list.item(cur - 1, 0).text())
+            self.ui.remark_lW_list_2.selectRow(cur - 1)
 
     # 选择下一个评论
     def load_next_remark(self):
-        cur = self.ui.remark_lW_list.currentRow()
-        total_row = self.ui.remark_lW_list.rowCount()
-        if cur < total_row-1:
-            self.ui.remark_lW_message.clear()
-            self.ui.remark_lW_message.setText(self.ui.remark_lW_list.item(cur + 1, 0).text())
-            #self.ui.remark_lW_message.addItem(self.ui.remark_lW_list.item(cur + 1, 0).text())
-            self.ui.remark_lW_list.selectRow(cur + 1)
+        cur = self.ui.remark_lW_list_2.currentRow()
+        total_row = self.ui.remark_lW_list_2.rowCount()
+        if cur < total_row - 1:
+            self.ui.remark_lW_message_2.clear()
+            self.ui.remark_lW_message_2.setText(self.ui.remark_lW_list.item(cur + 1, 0).text())
+            # self.ui.remark_lW_message.addItem(self.ui.remark_lW_list.item(cur + 1, 0).text())
+            self.ui.remark_lW_list_2.selectRow(cur + 1)
 
     # 显示当前评论
 
     def item_click(self, item):
         # print (str(item.text()))
-        self.ui.remark_lW_message.clear()
-        #self.ui.remark_lW_message.addItem(str(item.text()))
-        self.ui.remark_lW_message.setText(str(item.text()))
+        self.ui.remark_lW_message_2.clear()
+        # self.ui.remark_lW_message.addItem(str(item.text()))
+        self.ui.remark_lW_message_2.setText(str(item.text()))
 
     def yes_click(self):
         global CONSTANT
         key_list = []
         count = 0
-        #df = pd.read_csv('./data.csv', encoding='utf-8')
+        # df = pd.read_csv('./data.csv', encoding='utf-8')
         mark = CONSTANT
-        cur = self.ui.remark_lW_list.currentRow()
+        cur = self.ui.remark_lW_list_2.currentRow()
         if cur != -1:
-            test_choose = self.ui.remark_cB_class.currentText()
-            total_column = self.ui.remark_lW_list.columnCount() - 1
+            test_choose = self.ui.remark_cB_class_2.currentText()
+            total_column = self.ui.remark_lW_list_2.columnCount() - 1
             for i in range(total_column):
-                key_list.append(self.ui.remark_lW_list.horizontalHeaderItem(i + 1).text())
+                key_list.append(self.ui.remark_lW_list_2.horizontalHeaderItem(i + 1).text())
             for cols in key_list:
                 count += 1
                 if test_choose == cols:
-                    self.ui.remark_lW_list.setItem(cur, count, QTableWidgetItem(mark))
+                    self.ui.remark_lW_list_2.setItem(cur, count, QTableWidgetItem(mark))
 
-                    #df[cols].loc[cur] = mark
-                    #df.to_csv('./data.csv', encoding='utf-8')
+                    # df[cols].loc[cur] = mark
+                    # df.to_csv('./data.csv', encoding='utf-8')
         self.commentSave()
 
     def get_label_click(self, item):
