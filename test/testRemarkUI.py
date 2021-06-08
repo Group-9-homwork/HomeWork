@@ -14,10 +14,10 @@ class TestRemark(unittest.TestCase):
     def setUp(self):
         self.app = QApplication(sys.argv)
         self.mainWindow = QMainWindow()
-        self.ui = code.MainUI.Ui_MainWindow()
+        self.ui = codee.MainUI.Ui_MainWindow()
         self.ui.setupUi(self.mainWindow)
 
-        self.remark = code.Remark.RemarkModule(self.ui, "./test_data.json")
+        self.remark = codee.Remark.RemarkModule(self.ui, "./test_data.json")
         self.remark.remarkStart()
         self.remark.commentInit()
 

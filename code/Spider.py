@@ -7,8 +7,8 @@ import pandas as pd
 import threading
 import os
 
-from code.File import FileIO
-import code.GlobalValues as gv
+from File import FileIO
+import GlobalValues as gv
 from PyQt5.QtWidgets import QFileDialog
 
 

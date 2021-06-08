@@ -3,10 +3,10 @@ from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QMessageBox, QDial
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
-from code.File import FileIO
-import code.inputDia as inputDia
+from File import FileIO
+import inputDia as inputDia
 import pandas as pd
-import code.GlobalValues as gv
+import GlobalValues as gv
 
 class LabelModule():
     def __init__(self, ui):

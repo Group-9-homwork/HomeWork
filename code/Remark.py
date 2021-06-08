@@ -72,7 +72,7 @@ class RemarkModule:
             self.ui.remark_lW_list.insertRow(curRow)
             print(111)
             for j in range(self.ui.remark_lW_list.columnCount()):
-                print(new_comment[j])
+
                 if j < len(new_comment):
                     self.ui.remark_lW_list.setItem(curRow, j, QTableWidgetItem(new_comment[j]))
                 else:

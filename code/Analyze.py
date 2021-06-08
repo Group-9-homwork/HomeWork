@@ -1,6 +1,6 @@
 import json
 from PyQt5.QtWidgets import QInputDialog,QLineEdit,QWidget, QApplication
-from code.File import FileIO
+from File import FileIO
 import os
 
 import matplotlib.pyplot as plt
@@ -9,7 +9,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtWidgets import QHBoxLayout, QGridLayout, QVBoxLayout, QFormLayout
 from matplotlib.figure import Figure
 import pandas as pd
-import code.GlobalValues as gv
+import GlobalValues as gv
 from PyQt5.QtWidgets import QFileDialog
 matplotlib.use("Qt5Agg")
 
