@@ -1,14 +1,13 @@
-import os
-import csv
-import json
+import frozen_dir
 from Spider import *
 import pandas as pd
 
 
 class FileIO():
     def __init__(self):
-        self.filePath = './data.csv'
-        self.jsonPath = './test_data.json'
+        self.filePath = frozen_dir.app_path() + '\\data.csv'
+        print(self.filePath)
+        self.jsonPath = frozen_dir.app_path() + '\\test_data.json'
 
     def readFile(self, path):
         if path:
@@ -69,7 +68,7 @@ class FileIO():
     def readJson(self):
         '''读取json文件'''
         # 读取
-        with open('./test_data.json', 'r') as f:  # 判断文件是否存在！！！或者不存在添加
+        with open(frozen_dir.app_path() + '\\test_data.json', 'r') as f:  # 判断文件是否存在！！！或者不存在添加
             data = json.load(f)
             # print(type(data))  # dict
             return data
@@ -79,6 +78,6 @@ class FileIO():
         # dict转化成json
         data = json.dumps(dict, indent=4)
         # 保存
-        with open('./test_data.json', 'w') as f:
+        with open(frozen_dir.app_path() + '\\test_data.json', 'w') as f:
             f.write(data)
             # json.dump(data, f)

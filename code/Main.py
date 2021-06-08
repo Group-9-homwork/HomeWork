@@ -7,7 +7,7 @@ from Label import LabelModule
 from Remark import RemarkModule
 from Analyze import AnalyzeModule
 import GlobalValues as gv
-from code.Manage import ManageModule
+from Manage import ManageModule
 
 
 if __name__ == '__main__':
