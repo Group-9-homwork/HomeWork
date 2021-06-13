@@ -108,7 +108,7 @@ class ManageModule:
         # 从三个文件中读取数据
         dfFile1Tmp = self.fileIO.readCsv(filePath1)  # 比较文件1的DataFrame
         dfFile2Tmp = self.fileIO.readCsv(filePath2)  # 比较文件2的DataFrame
-        if self.dfFile1Tmp.empty or self.dfFile2Tmp.empty:
+        if dfFile1Tmp.empty or dfFile2Tmp.empty:
             QMessageBox.warning(
                 None,
                 '警告',
@@ -123,7 +123,7 @@ class ManageModule:
         # print(dfFile2Tmp)
 
         dfF1AndF2 = pd.merge(dfFile1Tmp, dfFile2Tmp, on='评论')
-        if self.dfF1AndF2.empty:
+        if dfF1AndF2.empty:
             QMessageBox.warning(
                 None,
                 '警告',
