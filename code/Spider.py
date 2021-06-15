@@ -76,7 +76,7 @@ class SpiderModule():
         # 终止当前线程！！！
         self.end = 1
         self.curK = 1
-        print(1111111)
+        #print(1111111)
 
     def stopCrawler(self):
         '''停止爬虫'''
@@ -107,8 +107,8 @@ class SpiderModule():
         # 获取界面输入
         self.stock = self.ui.spi_lE_stock.text()
         self.filePath = self.ui.spi_lE_path.text()
-        print(self.stock)
-        print(self.filePath)
+        #print(self.stock)
+        #print(self.filePath)
 
         try:
             f = open(self.filePath)
@@ -220,7 +220,7 @@ class SpiderModule():
                 None,
                 '警告',
                 '股票代码可能不存在，请仔细检查')
-            print("getPage Error!")
+            #print("getPage Error!")
             return None
         return page
 
@@ -292,9 +292,9 @@ class SpiderModule():
         dataDict = {'时间': [], '评论': []}
         for content in contents:
             dataDict['时间'].append(content.created_at)
-            print(content.created_at)
+            #print(content.created_at)
             dataDict['评论'].append(content.text)
-            print(content.text)
+            #print(content.text)
         # 写入文件
         self.fileio.writeCsv(self.filePath, dataDict)  # 路径和字典参数
         if 0 == self.flag:

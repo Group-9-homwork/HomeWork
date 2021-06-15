@@ -68,7 +68,7 @@ class LabelModule():
         # dia = inputDia()  # 生成输入对话框对象
         self.inputDia.show()
         labelClassName = self.inputDia.getLabelClassText('')  # 获取用户输入
-        print("labelClassName:" + labelClassName)
+        #print("labelClassName:" + labelClassName)
         if labelClassName == '':  # 用户没有输入直接返回
             return None
         # 判断是否已经存在该标签类！！！并提醒
@@ -87,7 +87,7 @@ class LabelModule():
         # self.commentData.to_csv(self.filePath, index=None)
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
 
     def labelClassDel(self):
@@ -118,7 +118,7 @@ class LabelModule():
         # self.commentData.to_csv(self.filePath, index=None)
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     def labelClassModify(self):
         '''修改标签类'''
@@ -155,7 +155,7 @@ class LabelModule():
         # self.commentData.to_csv(self.filePath, index=None)
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     '''def close_edit(self,item):
         try:
@@ -189,7 +189,7 @@ class LabelModule():
             self.ui.Lab_lW_labelMessage.addItem(labelName)
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     def labelAdd(self):
         '''添加标签'''
@@ -215,7 +215,7 @@ class LabelModule():
         self.jsonIO.writeJson(self.LabelClassDict)  # 写入json文件
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     def labelDel(self):
         '''删除标签'''
@@ -243,7 +243,7 @@ class LabelModule():
         self.jsonIO.writeJson(self.LabelClassDict)  # 写入json文件
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     def labelModify(self):
         '''修改标签'''
@@ -276,7 +276,7 @@ class LabelModule():
         self.jsonIO.writeJson(self.LabelClassDict)  # 写入json文件
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
 
 class inputDiaClass(QDialog, inputDia.Ui_Dialog):
