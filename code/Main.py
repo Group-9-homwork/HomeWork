@@ -1,5 +1,6 @@
 import sys
 import MainUI
+from MainUI import Ui_MainWindow
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 from Spider import SpiderModule
@@ -14,7 +15,7 @@ if __name__ == '__main__':
     # UI界面
     app = QApplication(sys.argv)
     mainWindow = QMainWindow()
-    ui = MainUI.Ui_MainWindow()
+    ui = Ui_MainWindow()
     ui.setupUi(mainWindow)
     mainWindow.show()
 

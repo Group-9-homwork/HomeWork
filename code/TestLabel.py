@@ -38,7 +38,7 @@ class TestLabel(unittest.TestCase):
         label.labelStart()
 
         QTest.keyClicks(label.inputDia.lineEdit, '111')
-        print(label.inputDia.lineEdit.text())
+        #print(label.inputDia.lineEdit.text())
         # 测试操作过程
         QTest.mouseClick(ui.lab_pB_addClass, Qt.LeftButton)
         # label.inputDia.lineEdit.setText('111')

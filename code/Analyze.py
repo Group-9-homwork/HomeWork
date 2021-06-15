@@ -36,7 +36,7 @@ class AnalyzeModule():
         self.filePath = gv.get_value('filePath')
         print(self.filePath)'''
         self.filePath = self.ui.ana_lE_path.text()
-        print(self.filePath)
+        #print(self.filePath)
 
         # 判断路径是否存在
         try:
@@ -94,7 +94,7 @@ class AnalyzeModule():
         for keys in self.LabelClassDict.keys():
             self.ui.ana_cB_class.addItem(keys)
         flag = 1
-        print(1111)
+        #print(1111)
         return flag
 
     # 解决tab切换问题，临时copy的一个
@@ -105,7 +105,7 @@ class AnalyzeModule():
         self.filePath = gv.get_value('filePath')
         print(self.filePath)'''
         self.filePath = self.ui.ana_lE_path.text()
-        print(self.filePath)
+        #print(self.filePath)
 
         # 判断路径是否存在
         try:
@@ -155,7 +155,7 @@ class AnalyzeModule():
         for keys in self.LabelClassDict.keys():
             self.ui.ana_cB_class.addItem(keys)
         flag = 1
-        print(1111)
+        #print(1111)
         return flag
 
     def analyzeStart(self):
@@ -195,7 +195,7 @@ class AnalyzeModule():
         # print(testChoose)
         if '' == testChoose:
             return None
-        print('当前标签类是：' + testChoose)
+        #print('当前标签类是：' + testChoose)
         labels = list(self.static[testChoose].keys())
         sizes = list(self.static[testChoose].values())
         explodes = [0.1 for _ in range(len(labels))]

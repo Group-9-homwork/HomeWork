@@ -74,6 +74,7 @@ class RemarkModule:
             item = QtWidgets.QTableWidgetItem()
             item.setText(list(self.LabelClassDict.keys())[i])
             self.ui.remark_lW_list.setHorizontalHeaderItem(i + 1, item)
+        self.ui.remark_lW_list.setColumnWidth(0, 745)
 
     # 文件选择获取路径，根据路径打开csv按列每行到list,list每行模板， list->csv
     def commentInit(self):
@@ -105,7 +106,7 @@ class RemarkModule:
         # print(self.time)
         # print(self.columns)
         del self.data['时间']
-        print(self.data)
+        #print(self.data)
         for i in range(self.data.shape[0]):
             new_comment = self.data.iloc[i].tolist()
             # print(new_comment)
@@ -148,7 +149,7 @@ class RemarkModule:
     # 选择标签类时，更新标签显示列表
     def comboBox_label_choose(self):
         test_choose = self.ui.remark_cB_class.currentText()
-        print(test_choose)
+        #print(test_choose)
         if test_choose != "":
             self.ui.remark_lW_label.clear()
             new_label = self.LabelClassDict[test_choose]
@@ -216,10 +217,10 @@ class RemarkModule:
             for cols in key_list:
                 count += 1
                 if test_choose == cols:
-                    print(cols)
+                    #print(cols)
                     self.data[cols].iloc[curRow] = "待标注"
                     self.ui.remark_lW_list.setItem(curRow, count, QTableWidgetItem("待标注"))
-                    print(self.data.iloc[curRow])
+                    #print(self.data.iloc[curRow])
         self.commentSave()
 
     def yes_click(self):
@@ -255,10 +256,10 @@ class RemarkModule:
             for cols in key_list:
                 count += 1
                 if test_choose == cols:
-                    print(cols)
+                    #print(cols)
                     self.data[cols].iloc[curRow] = mark
                     self.ui.remark_lW_list.setItem(curRow, count, QTableWidgetItem(mark))
-                    print(self.data.iloc[curRow])
+                    #print(self.data.iloc[curRow])
         self.commentSave()
 
     # 点击标注时保存
@@ -270,7 +271,7 @@ class RemarkModule:
             oldData = pd.DataFrame()
         else:
             oldData = pd.read_csv(commentFilePath)
-        print(oldData)
+        #print(oldData)
         # 将新的数据替换
         for colName in self.data.columns.values.tolist():
             oldData[colName] = self.data[colName]
