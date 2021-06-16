@@ -2,9 +2,9 @@ import unittest
 
 from PyQt5 import QtTest
 from PyQt5 import QtCore
-from code.Analyze import *
+from codes.Analyze import *
 import sys
-from code import MainUI
+from codes import MainUI
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 class MyTestCase(unittest.TestCase):

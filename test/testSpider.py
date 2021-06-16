@@ -1,9 +1,9 @@
 import unittest
 import sys
-from code import MainUI
+from codes import MainUI
 from PyQt5.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit
 
-from code.Spider import SpiderModule, Content
+from codes.Spider import SpiderModule, Content
 
 
 class MyTestCase(unittest.TestCase):

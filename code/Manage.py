@@ -32,7 +32,7 @@ class ManageModule:
         self.dfFileTmp = pd.DataFrame()  # 第三个文件不同的数据
         self.ui.remark_lE_path_3.setReadOnly(True)
         self.ui.remark_lE_path_4.setReadOnly(True)
-        self.ui.remark_lE_path_2.setReadOnly(True)
+        # self.ui.remark_lE_path_2.setReadOnly(True)
         self.fileIO = FileIO()
         # self.filePath = file_path
         self.LabelClassDict = {}
@@ -63,6 +63,9 @@ class ManageModule:
         self.ui.remark_lW_label_2.itemClicked.connect(self.get_label_click)  # 绑定列表点击
 
     def TableInit(self):
+        # 清空表格内容
+        self.ui.remark_lW_list_2.clearContents()
+        self.ui.remark_lW_list_2.setRowCount(0)
         # print(list(self.LabelClassDict.keys()))
         ColumnCount = self.LabelClassDict.__len__()*3 + 1
         self.ui.remark_lW_list_2.setColumnCount(ColumnCount)
@@ -91,24 +94,24 @@ class ManageModule:
         filePath2 = self.ui.remark_lE_path_4.text()  # 获取比较文件2的路径
         filePath = self.ui.remark_lE_path_2.text()  # 获取综合文件的路径
         # 判断文件路径是否正确
-        try:
-            f1 = open(filePath1)
-            f1.close()
-            f2 = open(filePath2)
-            f2.close()
-            f2 = open(filePath)
-            f2.close()
-        except IOError:
+        if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', filePath1):
+            return
+        if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', filePath2):
+            return
+        if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', filePath):
             return
         if not (re.search('\.csv$', filePath1) and re.search('\.csv$', filePath2) and re.search('\.csv$', filePath)):
             return
+
+        f = open(filePath, 'a+')  # 如果不存在则创建一个
+        f.close()
 
         self.TableInit()
 
         # 从三个文件中读取数据
         dfFile1Tmp = self.fileIO.readCsv(filePath1)  # 比较文件1的DataFrame
         dfFile2Tmp = self.fileIO.readCsv(filePath2)  # 比较文件2的DataFrame
-        if self.dfFile1Tmp.empty or self.dfFile2Tmp.empty:
+        if dfFile1Tmp.empty or dfFile2Tmp.empty:
             QMessageBox.warning(
                 None,
                 '警告',
@@ -123,13 +126,13 @@ class ManageModule:
         # print(dfFile2Tmp)
 
         dfF1AndF2 = pd.merge(dfFile1Tmp, dfFile2Tmp, on='评论')
-        if self.dfF1AndF2.empty:
+        if dfF1AndF2.empty:
             QMessageBox.warning(
                 None,
                 '警告',
                 '比较文件不存在可对比的数据！')
             return
-        print(dfF1AndF2)
+        print(dfF1AndF2.columns)
         if self.dfFileTmp.empty:
             self.time = dfF1AndF2['时间_x'].tolist()
             dfFile1 = pd.DataFrame()
@@ -145,7 +148,6 @@ class ManageModule:
                 dfFile2[colNums] = dfF1AndF2[colNums + '_y']
                 dfFile[colNums] = '待标注'
                 self.dfFile[colNums] = '待标注'
-
         else:
             self.time = dfF1AndF2['时间_x'].tolist()
             tmp = pd.merge(dfF1AndF2, self.dfFileTmp, left_on='评论', right_on='评论', how='left')
@@ -406,7 +408,7 @@ class ManageModule:
             None,  # 父窗口对象
             "打开文件",  # 标题
             "./",  # 起始目录
-            "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
+            # "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
         )
         self.ui.remark_lE_path_2.setText(FilePath)
 

@@ -42,7 +42,7 @@ class FileIO():
         # 读取原有数据
         try:
             oldData = pd.read_csv(path)
-        except pd.errors.EmptyDataError:
+        except pd.errors.EmptyDataError:  # 如果数据是空的话，则添加列名
             colLabel = ['时间', '评论'] + list(labelClassDict.keys())
             oldData = pd.DataFrame(columns=colLabel)
 

@@ -50,6 +50,7 @@ class SpiderModule():
         self.fileio = FileIO()  # 文件的读写操作
         self.noPage = 0  # 页面是否获取
         self.end = 0  # 是否结束线程爬虫
+        self.fileIO = FileIO()
 
     def spiderStart(self):
         '''添加信号和槽'''
@@ -65,9 +66,10 @@ class SpiderModule():
             None,  # 父窗口对象
             "打开文件",  # 标题
             "./",  # 起始目录
-            "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
+            # "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
         )
         self.ui.spi_lE_path.setText(self.filePath)
+        print(self.filePath)
 
     def changeCur(self):
         '''文本内容改变就从第一页第一条开始爬'''
@@ -76,7 +78,7 @@ class SpiderModule():
         # 终止当前线程！！！
         self.end = 1
         self.curK = 1
-        print(1111111)
+        # print(1111111)
 
     def stopCrawler(self):
         '''停止爬虫'''
@@ -110,22 +112,38 @@ class SpiderModule():
         print(self.stock)
         print(self.filePath)
 
-        try:
-            f = open(self.filePath)
-            f.close()
-        except IOError:
-            QMessageBox.warning(
-                None,
-                '警告',
-                '文件错误，请重新输入路径！')
-            return
-
         # 正则表达式匹配是否是股票代码和csv文件
         if not re.search('^[A-Z]{2}[0-9]{6}', self.stock):
             QMessageBox.warning(
                 None,
                 '警告',
                 '股票代码格式错误，请重新输入！')
+            # 设置文本输入框为可编辑
+            # self.ui.spi_lE_stock.setFocusPolicy(Qt.Focus)
+            # self.ui.spi_lE_path.setFocusPolicy(Qt.Focus)
+            self.ui.spi_lE_stock.setReadOnly(False)
+            self.ui.spi_lE_path.setReadOnly(False)
+
+            # 设置按钮不可点击
+            self.ui.spi_pB_yes.setEnabled(True);
+            self.ui.spi_pB_open.setEnabled(True);
+            self.ui.spi_pB_stop.setEnabled(False);
+            return
+
+        if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', self.filePath):
+            print(self.filePath)
+            QMessageBox.warning(
+                None,
+                '警告',
+                '文件路径错误，请重新输入！')
+            # 设置文本输入框为可编辑
+            self.ui.spi_lE_stock.setReadOnly(False)
+            self.ui.spi_lE_path.setReadOnly(False)
+
+            # 设置按钮不可点击
+            self.ui.spi_pB_yes.setEnabled(True);
+            self.ui.spi_pB_open.setEnabled(True);
+            self.ui.spi_pB_stop.setEnabled(False);
             return
 
         if not re.search('\.csv$', self.filePath):
@@ -133,12 +151,23 @@ class SpiderModule():
                 None,
                 '警告',
                 '文件类型错误，请选择csv文件！')
+            # 设置文本输入框为可编辑
+            self.ui.spi_lE_stock.setReadOnly(False)
+            self.ui.spi_lE_path.setReadOnly(False)
+
+            # 设置按钮不可点击
+            self.ui.spi_pB_yes.setEnabled(True);
+            self.ui.spi_pB_open.setEnabled(True);
+            self.ui.spi_pB_stop.setEnabled(False);
             return
 
-        # 这里应该对输入格式进行判断!!!!!!
-        if '' == self.stock or '' == self.filePath:
+        f = open(self.filePath, 'a+')  # 如果不存在则创建一个
+        f.close()
+
+        '''if '' == self.stock or '' == self.filePath:
             self.stock = "SH603517"
             self.filePath = "./data.csv"
+        print('33333')'''
 
         # 更新全局变量
         '''gv.set_value("stock", self.stock)
@@ -155,12 +184,15 @@ class SpiderModule():
         self.ui.spi_tB_message.ensureCursorVisible()'''
 
         # 提取出时间，用来防止重复读，这里排序下感觉会更好
-        if not os.path.exists(self.filePath):
-            # self.commentData = pd.DataFrame()
-            self.commentTime = []
-        else:
-            self.commentData = pd.read_csv(self.filePath)
-            self.commentTime = (self.commentData['时间']).values.tolist()  # 用来防止重复读，其实转化成数字更好
+        self.commentData = self.fileIO.readCsv(self.filePath)
+        self.commentTime = (self.commentData['时间']).values.tolist()  # 用来防止重复读，其实转化成数字更好
+
+        '''if dfFile1Tmp.empty or dfFile2Tmp.empty:
+            QMessageBox.warning(
+                None,
+                '警告',
+                '比较文件里没有数据！')
+            return'''
 
         self.query['symbol'] = self.stock
         self.flag = 1
@@ -236,9 +268,29 @@ class SpiderModule():
             # print(page)
             if page == None:
                 self.noPage = 1
+                # 设置文本输入框为可编辑
+                # self.ui.spi_lE_stock.setFocusPolicy(Qt.Focus)
+                # self.ui.spi_lE_path.setFocusPolicy(Qt.Focus)
+                self.ui.spi_lE_stock.setReadOnly(False)
+                self.ui.spi_lE_path.setReadOnly(False)
+
+                # 设置按钮不可点击
+                self.ui.spi_pB_yes.setEnabled(True);
+                self.ui.spi_pB_open.setEnabled(True);
+                self.ui.spi_pB_stop.setEnabled(False);
                 return []
             if page['list'] == []:
                 self.noPage = 1
+                # 设置文本输入框为可编辑
+                # self.ui.spi_lE_stock.setFocusPolicy(Qt.Focus)
+                # self.ui.spi_lE_path.setFocusPolicy(Qt.Focus)
+                self.ui.spi_lE_stock.setReadOnly(False)
+                self.ui.spi_lE_path.setReadOnly(False)
+
+                # 设置按钮不可点击
+                self.ui.spi_pB_yes.setEnabled(True);
+                self.ui.spi_pB_open.setEnabled(True);
+                self.ui.spi_pB_stop.setEnabled(False);
                 return []
 
             j = self.curComment
@@ -287,6 +339,16 @@ class SpiderModule():
 
         # 保存
         if contents == None:
+            # 设置文本输入框为可编辑
+            # self.ui.spi_lE_stock.setFocusPolicy(Qt.Focus)
+            # self.ui.spi_lE_path.setFocusPolicy(Qt.Focus)
+            self.ui.spi_lE_stock.setReadOnly(False)
+            self.ui.spi_lE_path.setReadOnly(False)
+
+            # 设置按钮不可点击
+            self.ui.spi_pB_yes.setEnabled(True);
+            self.ui.spi_pB_open.setEnabled(True);
+            self.ui.spi_pB_stop.setEnabled(False);
             return
         # 把content转化为字典
         dataDict = {'时间': [], '评论': []}
