@@ -3,10 +3,10 @@ from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QMessageBox, QDial
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
-from code.File import FileIO
-import code.inputDia as inputDia
+from File import FileIO
+import inputDia as inputDia
 import pandas as pd
-import code.GlobalValues as gv
+import GlobalValues as gv
 
 class LabelModule():
     def __init__(self, ui):
@@ -14,7 +14,7 @@ class LabelModule():
         # 读取json文件来初始化
         self.jsonIO = FileIO()
         self.LabelClassDict = self.jsonIO.readJson()  # 存储标签类和标签的字典，‘标签类：[标签]’
-
+        # print(self.LabelClassDict)
         # 增加类和标签的输入
         self.inputDia = inputDiaClass()  # 子窗口
         # self.diaLabel = inputDiaClass()  # 标签
@@ -58,7 +58,7 @@ class LabelModule():
         self.ui.lab_pB_delLabel.clicked.connect(self.labelDel)  # 点击删除标签按钮
         self.ui.Lab_lW_labelMessage.itemDoubleClicked.connect(self.labelModify)  # 双击标签item
 
-        self.ui.tabWidget.currentChanged.connect(self.initData)
+        self.ui.tabWidget.currentChanged.connect(self.initData)  # tab点击转换时
 
         # self.ui.lab_lW_ClassMessage.currentTextChanged.connect(self.changeDict)  # 改变字典
         # 按道理点击tab或这关闭啥的才保存！！！这里每一次操作都保存
@@ -68,7 +68,7 @@ class LabelModule():
         # dia = inputDia()  # 生成输入对话框对象
         self.inputDia.show()
         labelClassName = self.inputDia.getLabelClassText('')  # 获取用户输入
-        print("labelClassName:" + labelClassName)
+        #print("labelClassName:" + labelClassName)
         if labelClassName == '':  # 用户没有输入直接返回
             return None
         # 判断是否已经存在该标签类！！！并提醒
@@ -83,11 +83,11 @@ class LabelModule():
         self.LabelClassDict[labelClassName] = []  # 添加进字典
         self.jsonIO.writeJson(self.LabelClassDict)  # 写入json文件
         # 修改csv文件的内容
-        self.commentData[labelClassName] = '待标注'
-        self.commentData.to_csv(self.filePath, index=None)
+        # self.commentData[labelClassName] = '待标注'
+        # self.commentData.to_csv(self.filePath, index=None)
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
 
     def labelClassDel(self):
@@ -114,11 +114,11 @@ class LabelModule():
         self.ui.Lab_lW_labelMessage.clear()  # 并清空标签的listWidget的内容
         self.jsonIO.writeJson(self.LabelClassDict)  # 写入json文件
         # 修改csv文件的内容
-        del self.commentData[labelClassName]
-        self.commentData.to_csv(self.filePath, index=None)
+        # del self.commentData[labelClassName]
+        # self.commentData.to_csv(self.filePath, index=None)
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     def labelClassModify(self):
         '''修改标签类'''
@@ -151,11 +151,11 @@ class LabelModule():
         self.LabelClassDict[newLabelClassName] = self.LabelClassDict.pop(oldLabelClassName)  # 修改字典key
         self.jsonIO.writeJson(self.LabelClassDict)  # 写入json文件
         # 修改csv文件
-        self.commentData = self.commentData.rename(columns={oldLabelClassName: newLabelClassName})
-        self.commentData.to_csv(self.filePath, index=None)
+        # self.commentData = self.commentData.rename(columns={oldLabelClassName: newLabelClassName})
+        # self.commentData.to_csv(self.filePath, index=None)
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     '''def close_edit(self,item):
         try:
@@ -189,7 +189,7 @@ class LabelModule():
             self.ui.Lab_lW_labelMessage.addItem(labelName)
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     def labelAdd(self):
         '''添加标签'''
@@ -215,7 +215,7 @@ class LabelModule():
         self.jsonIO.writeJson(self.LabelClassDict)  # 写入json文件
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     def labelDel(self):
         '''删除标签'''
@@ -243,7 +243,7 @@ class LabelModule():
         self.jsonIO.writeJson(self.LabelClassDict)  # 写入json文件
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
     def labelModify(self):
         '''修改标签'''
@@ -276,7 +276,7 @@ class LabelModule():
         self.jsonIO.writeJson(self.LabelClassDict)  # 写入json文件
 
         # 下面这些输出控制台方便查看的，没什么用
-        print(self.LabelClassDict.items())
+        #print(self.LabelClassDict.items())
 
 
 class inputDiaClass(QDialog, inputDia.Ui_Dialog):
