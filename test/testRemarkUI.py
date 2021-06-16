@@ -9,17 +9,17 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 
 import sys
 
-import codee.Remark
-import codee.MainUI
+import code.Remark
+import code.MainUI
 
 class TestRemark(unittest.TestCase):
     def setUp(self):
         self.app = QApplication(sys.argv)
         self.mainWindow = QMainWindow()
-        self.ui = codee.MainUI.Ui_MainWindow()
+        self.ui = code.MainUI.Ui_MainWindow()
         self.ui.setupUi(self.mainWindow)
 
-        self.remark = codee.Remark.RemarkModule(self.ui, "./test_data.json")
+        self.remark = code.Remark.RemarkModule(self.ui,"./test_data.json")
         self.remark.remarkStart()
         self.remark.commentInit()
 
@@ -34,7 +34,7 @@ class TestRemark(unittest.TestCase):
         QtTest.QTest.mouseClick(self.ui.remark_cB_class, QtCore.Qt.LeftButton)
         self.ui.remark_cB_class.setCurrentIndex(1)
         self.ui.remark_lW_label.setCurrentRow(1)
-        #codee.Remark.RemarkModule.comboBox_label_choose(self)
+        #code.Remark.RemarkModule.comboBox_label_choose(self)
         self.assertEqual(self.ui.remark_lW_label.currentItem().text(), "222")
 
     #测试表格初始化
@@ -62,7 +62,7 @@ class TestRemark(unittest.TestCase):
 
     # 测试标签读取
     def test_read_json(self):
-        self.assertEqual(codee.Remark.read_json("./test_data.json")['3'], ["111", "222", "444"])
+        self.assertEqual(code.Remark.read_json("./test_data.json")['3'], ["111", "222", "444"])
 
 
 if __name__ == '__main__':
