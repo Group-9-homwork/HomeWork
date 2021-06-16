@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'inputDia.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI codee generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 

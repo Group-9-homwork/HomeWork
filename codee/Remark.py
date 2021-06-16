@@ -191,7 +191,7 @@ class RemarkModule:
         global CONSTANT
         key_list = []
         count = 0
-        df = pd.read_csv('./data1.csv', encoding='utf-8')
+        df = pd.read_csv('./data.csv', encoding='utf-8')
         mark = CONSTANT
         cur = self.ui.remark_lW_list.currentRow()
         if cur != -1:
@@ -204,7 +204,7 @@ class RemarkModule:
                 if test_choose == cols:
                     self.ui.remark_lW_list.setItem(cur, count, QTableWidgetItem(mark))
                     df[cols].loc[cur] = mark
-                    df.to_csv('./data1.csv', encoding='utf-8')
+                    df.to_csv('./data.csv', encoding='utf-8')
 
     def get_label_click(self,item):
         global CONSTANT

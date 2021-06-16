@@ -7,8 +7,8 @@ import pandas as pd
 import threading
 import os
 
-from code.File import FileIO
-import code.GlobalValues as gv
+from codee.File import FileIO
+import codee.GlobalValues as gv
 from PyQt5.QtWidgets import QFileDialog
 
 class SpiderModule:
