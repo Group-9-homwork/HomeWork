@@ -32,7 +32,7 @@ class ManageModule:
         self.dfFileTmp = pd.DataFrame()  # 第三个文件不同的数据
         self.ui.remark_lE_path_3.setReadOnly(True)
         self.ui.remark_lE_path_4.setReadOnly(True)
-        self.ui.remark_lE_path_2.setReadOnly(True)
+        # self.ui.remark_lE_path_2.setReadOnly(True)
         self.fileIO = FileIO()
         # self.filePath = file_path
         self.LabelClassDict = {}
@@ -55,14 +55,17 @@ class ManageModule:
 
         self.ui.tabWidget.currentChanged.connect(self.initLabel)  # 绑定TAB标签点击时的信号与槽函数
 
-        #self.ui.ann_pB_pre_3.clicked.connect(self.load_previous_remark)  # 绑定上一个按钮
-        #self.ui.ann_pB_pre_2.clicked.connect(self.load_next_remark)  # 绑定下一个按钮
+        self.ui.ann_pB_pre_3.clicked.connect(self.load_previous_remark)  # 绑定上一个按钮
+        self.ui.ann_pB_pre_2.clicked.connect(self.load_next_remark)  # 绑定下一个按钮
         self.ui.ann_pB_next_2.clicked.connect(self.commentDelete)  # 绑定删除按钮
         self.ui.remark_lW_list_2.itemClicked.connect(self.item_click)  # 绑定列表点击
         self.ui.ann_pB_yes_2.clicked.connect(self.yes_click)  # 绑定列表点击
         self.ui.remark_lW_label_2.itemClicked.connect(self.get_label_click)  # 绑定列表点击
 
     def TableInit(self):
+        # 清空表格内容
+        self.ui.remark_lW_list_2.clearContents()
+        self.ui.remark_lW_list_2.setRowCount(0)
         # print(list(self.LabelClassDict.keys()))
         ColumnCount = self.LabelClassDict.__len__()*3 + 1
         self.ui.remark_lW_list_2.setColumnCount(ColumnCount)
@@ -91,17 +94,17 @@ class ManageModule:
         filePath2 = self.ui.remark_lE_path_4.text()  # 获取比较文件2的路径
         filePath = self.ui.remark_lE_path_2.text()  # 获取综合文件的路径
         # 判断文件路径是否正确
-        try:
-            f1 = open(filePath1)
-            f1.close()
-            f2 = open(filePath2)
-            f2.close()
-            f2 = open(filePath)
-            f2.close()
-        except IOError:
+        if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', filePath1):
+            return
+        if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', filePath2):
+            return
+        if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', filePath):
             return
         if not (re.search('\.csv$', filePath1) and re.search('\.csv$', filePath2) and re.search('\.csv$', filePath)):
             return
+
+        f = open(filePath, 'a+')  # 如果不存在则创建一个
+        f.close()
 
         self.TableInit()
 
@@ -129,7 +132,7 @@ class ManageModule:
                 '警告',
                 '比较文件不存在可对比的数据！')
             return
-        #print(dfF1AndF2)
+        print(dfF1AndF2.columns)
         if self.dfFileTmp.empty:
             self.time = dfF1AndF2['时间_x'].tolist()
             dfFile1 = pd.DataFrame()
@@ -145,13 +148,12 @@ class ManageModule:
                 dfFile2[colNums] = dfF1AndF2[colNums + '_y']
                 dfFile[colNums] = '待标注'
                 self.dfFile[colNums] = '待标注'
-
         else:
             self.time = dfF1AndF2['时间_x'].tolist()
             tmp = pd.merge(dfF1AndF2, self.dfFileTmp, left_on='评论', right_on='评论', how='left')
             # 把为None的改为待标注
             tmp = tmp.where(tmp.notnull(), "待标注")
-            #print(tmp)
+            print(tmp)
             # 拆分三个文件
             dfFile1 = pd.DataFrame()
             dfFile2 = pd.DataFrame()
@@ -177,7 +179,7 @@ class ManageModule:
         # 显示在表格上
         # self.time = dfFile1['时间'].tolist()
         self.columns = dfFile1.columns.tolist()
-        self.ui.remark_lW_list_2.setRowCount(0)
+
         for i in range(dfFile1.shape[0]):
             # 每一行变成列表
             comFile1 = dfFile1.iloc[i].tolist()
@@ -247,7 +249,7 @@ class ManageModule:
     # 选择标签类时，更新标签显示列表
     def comboBox_label_choose(self):
         test_choose = self.ui.remark_cB_class_2.currentText()
-        #print(test_choose)
+        print(test_choose)
         if test_choose != "":
             self.ui.remark_lW_label_2.clear()
             new_label = self.LabelClassDict[test_choose]
@@ -256,7 +258,7 @@ class ManageModule:
     # 选择上一个评论
     def load_previous_remark(self):
         cur = self.ui.remark_lW_list_2.currentRow()
-        #print(cur)
+        print(cur)
         if cur > 0:
             self.ui.remark_lW_message_2.setText(self.ui.remark_lW_list_2.item(cur - 1, 0).text())
             # self.ui.remark_lW_message.addItem(self.ui.remark_lW_list.item(cur - 1, 0).text())
@@ -307,10 +309,10 @@ class ManageModule:
             for cols in key_list:
                 count += 1
                 if test_choose == cols:
-                    #print(cols)
+                    print(cols)
                     self.dfFile[cols].iloc[curRow] = "待标注"
                     self.ui.remark_lW_list_2.setItem(curRow, count, QTableWidgetItem("待标注"))
-                    #print(self.dfFile.iloc[curRow])
+                    print(self.dfFile.iloc[curRow])
         self.commentSave()
 
     def yes_click(self):
@@ -347,11 +349,10 @@ class ManageModule:
             for cols in key_list:
                 count += 1
                 if test_choose == cols:
-                    #print(cols)
+                    print(cols)
                     self.dfFile[cols].iloc[curRow] = mark
                     self.ui.remark_lW_list_2.setItem(curRow, count, QTableWidgetItem(mark))
-                    self.ui.remark_lW_list_2.item(curRow, count).setForeground(QBrush(QColor(0, 200, 0)))
-                    #print(self.dfFile.iloc[curRow])
+                    print(self.dfFile.iloc[curRow])
         self.commentSave()
 
     def commentSave(self):
@@ -407,7 +408,7 @@ class ManageModule:
             None,  # 父窗口对象
             "打开文件",  # 标题
             "./",  # 起始目录
-            "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
+            # "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
         )
         self.ui.remark_lE_path_2.setText(FilePath)
 

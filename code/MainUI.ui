@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <property name="iconSize">
        <size>
@@ -356,6 +356,13 @@
              </widget>
             </item>
             <item>
+             <widget class="QPushButton" name="remark_pB_save2">
+              <property name="text">
+               <string>另存为</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <spacer name="horizontalSpacer">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -365,7 +372,7 @@
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>155</width>
+                <width>31</width>
                 <height>20</height>
                </size>
               </property>
@@ -560,7 +567,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>打开路径1：</string>
+                 <string>文件路径1：</string>
                 </property>
                </widget>
               </item>
@@ -633,7 +640,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>打开路径2：</string>
+                 <string>文件路径2：</string>
                 </property>
                </widget>
               </item>
@@ -779,7 +786,7 @@
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>155</width>
+                <width>135</width>
                 <height>20</height>
                </size>
               </property>
@@ -1120,11 +1127,6 @@
          </layout>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="about">
-       <attribute name="title">
-        <string>关于</string>
-       </attribute>
       </widget>
      </widget>
     </item>

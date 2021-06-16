@@ -45,12 +45,14 @@ class RemarkModule:
         # self.TableInit()
         # self.ui.remark_lE_path.setText('./data.csv')
         # print(self.LabelClassDict)
+        self.filePath = 0
 
     def remarkStart(self):
         # 添加信号和槽。#将ui中的控件与自定义函数连接
         self.ui.remark_cB_class.currentIndexChanged.connect(self.comboBox_label_choose)  # 下拉框切换
         self.ui.remark_pB_save.clicked.connect(self.commentInit)  # 确认按钮
         self.ui.remark_pB_open.clicked.connect(self.openFile)  # 打开文件按钮
+        self.ui.remark_pB_save2.clicked.connect(self.saveFile)  # 另存为按钮
 
         self.ui.tabWidget.currentChanged.connect(self.initLabel)  # 绑定TAB标签点击时的信号与槽函数
 
@@ -60,6 +62,7 @@ class RemarkModule:
         self.ui.remark_lW_list.itemClicked.connect(self.item_click)  # 绑定列表点击
         self.ui.ann_pB_yes.clicked.connect(self.yes_click)  # 绑定列表点击
         self.ui.remark_lW_label.itemClicked.connect(self.get_label_click)  # 绑定列表点击
+
 
     def TableInit(self):
         '''表头初始化'''
@@ -74,23 +77,33 @@ class RemarkModule:
             item = QtWidgets.QTableWidgetItem()
             item.setText(list(self.LabelClassDict.keys())[i])
             self.ui.remark_lW_list.setHorizontalHeaderItem(i + 1, item)
-        self.ui.remark_lW_list.setColumnWidth(0, 745)
 
     # 文件选择获取路径，根据路径打开csv按列每行到list,list每行模板， list->csv
     def commentInit(self):
-        commentFilePath = self.ui.remark_lE_path.text()
+        self.filePath = self.ui.remark_lE_path.text()
+        print(self.filePath)
+
         # 判断文件路径是否正确
-        try:
-            f = open(commentFilePath)
-            f.close()
-        except IOError:
-            return
-        if not re.search('\.csv$', commentFilePath):
+        if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', self.filePath):
+            QMessageBox.warning(
+                None,
+                '警告',
+                '文件路径错误，请重新输入！')
             return
 
+        if not re.search('\.csv$', self.filePath):
+            QMessageBox.warning(
+                None,
+                '警告',
+                '文件类型错误，请选择csv文件！')
+            return
+
+        '''f = open(self.filePath, 'a+')  # 如果不存在则创建一个
+        f.close()'''
+
         self.ui.remark_lW_list.setRowCount(0)
-        # df = pd.read_csv(commentFilePath, encoding="utf-8")
-        self.data = self.fileIO.readCsv(commentFilePath)
+        # df = pd.read_csv(self.filePath, encoding="utf-8")
+        self.data = self.fileIO.readCsv(self.filePath)
         if self.data.empty:
             QMessageBox.warning(
                 None,
@@ -106,7 +119,53 @@ class RemarkModule:
         # print(self.time)
         # print(self.columns)
         del self.data['时间']
-        #print(self.data)
+        print(self.data)
+        for i in range(self.data.shape[0]):
+            new_comment = self.data.iloc[i].tolist()
+            # print(new_comment)
+            curRow = self.ui.remark_lW_list.rowCount()
+            self.ui.remark_lW_list.insertRow(curRow)
+            # print(111)
+            for j in range(self.ui.remark_lW_list.columnCount()):
+                if j < len(new_comment):
+                    self.ui.remark_lW_list.setItem(curRow, j, QTableWidgetItem(new_comment[j]))
+                else:
+                    self.ui.remark_lW_list.setItem(curRow, j, QTableWidgetItem("待标注"))
+
+
+    # 文件选择获取路径，根据路径打开csv按列每行到list,list每行模板， list->csv
+    def commentInit2(self):
+        self.filePath = self.ui.remark_lE_path.text()
+
+        # 判断文件路径是否正确
+        if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', self.filePath):
+            return
+
+        if not re.search('\.csv$', self.filePath):
+            return
+
+        '''f = open(self.filePath, 'a+')  # 如果不存在则创建一个
+        f.close()'''
+
+        self.ui.remark_lW_list.setRowCount(0)
+        # df = pd.read_csv(self.filePath, encoding="utf-8")
+        self.data = self.fileIO.readCsv(self.filePath)
+        if self.data.empty:
+            QMessageBox.warning(
+                None,
+                '警告',
+                '该文件里没有数据！')
+            return
+
+        self.TableInit()
+
+        self.time = self.data['时间'].tolist()
+        self.columns = self.data.columns.tolist()
+
+        # print(self.time)
+        # print(self.columns)
+        del self.data['时间']
+        print(self.data)
         for i in range(self.data.shape[0]):
             new_comment = self.data.iloc[i].tolist()
             # print(new_comment)
@@ -121,13 +180,30 @@ class RemarkModule:
 
     def openFile(self):
         flag = 0
-        FilePath, _ = QFileDialog.getOpenFileName(
+        self.filePath, _ = QFileDialog.getOpenFileName(
             None,  # 父窗口对象
             "打开文件",  # 标题
             "./",  # 起始目录
             "文件类型 (*.csv)"  # 选择类型过滤项，过滤内容在括号中
         )
-        self.ui.remark_lE_path.setText(FilePath)
+        self.ui.remark_lE_path.setText(self.filePath)
+        print(self.filePath)
+
+    def saveFile(self):
+        '''保存文件'''
+        saveFilePath, _  = QFileDialog.getSaveFileName(None, "保存文件", self.filePath,
+                                    "文件类型 (*.csv)")
+        print(saveFilePath)
+        # 通过pandas保存
+        # 读取原有的数据
+        oldData = pd.read_csv(self.filePath)
+        # 将新的数据替换
+        for colName in self.data.columns.values.tolist():
+            oldData[colName] = self.data[colName]
+
+        # 再写回
+        oldData.to_csv(saveFilePath, index=None)
+
 
     def initLabel(self):
         self.getLabel()
@@ -136,7 +212,7 @@ class RemarkModule:
         # self.remark_lW_list.clearContents()
         # self.remark_lW_list.setRowCount(0)
         # self.TableInit()
-        self.commentInit()
+        self.commentInit2()
 
     def getLabel(self):
         self.LabelClassDict = self.fileIO.readJson()
@@ -149,7 +225,7 @@ class RemarkModule:
     # 选择标签类时，更新标签显示列表
     def comboBox_label_choose(self):
         test_choose = self.ui.remark_cB_class.currentText()
-        #print(test_choose)
+        print(test_choose)
         if test_choose != "":
             self.ui.remark_lW_label.clear()
             new_label = self.LabelClassDict[test_choose]
@@ -217,10 +293,10 @@ class RemarkModule:
             for cols in key_list:
                 count += 1
                 if test_choose == cols:
-                    #print(cols)
+                    print(cols)
                     self.data[cols].iloc[curRow] = "待标注"
                     self.ui.remark_lW_list.setItem(curRow, count, QTableWidgetItem("待标注"))
-                    #print(self.data.iloc[curRow])
+                    print(self.data.iloc[curRow])
         self.commentSave()
 
     def yes_click(self):
@@ -256,32 +332,32 @@ class RemarkModule:
             for cols in key_list:
                 count += 1
                 if test_choose == cols:
-                    #print(cols)
+                    print(cols)
                     self.data[cols].iloc[curRow] = mark
                     self.ui.remark_lW_list.setItem(curRow, count, QTableWidgetItem(mark))
-                    #print(self.data.iloc[curRow])
+                    print(self.data.iloc[curRow])
         self.commentSave()
 
     # 点击标注时保存
     def commentSave(self):
-        commentFilePath = self.ui.remark_lE_path.text()
+        self.filePath = self.ui.remark_lE_path.text()
         # 通过pandas保存
         # 读取原有的数据
-        if not os.path.exists(commentFilePath):
+        if not os.path.exists(self.filePath):
             oldData = pd.DataFrame()
         else:
-            oldData = pd.read_csv(commentFilePath)
-        #print(oldData)
+            oldData = pd.read_csv(self.filePath)
+        print(oldData)
         # 将新的数据替换
         for colName in self.data.columns.values.tolist():
             oldData[colName] = self.data[colName]
 
         # 再写回
-        oldData.to_csv(commentFilePath, index=None)
+        oldData.to_csv(self.filePath, index=None)
 
-        '''commentFilePath = self.ui.remark_lE_path.text()
-        # commentFilePath = './data.csv'
-        with codecs.open(commentFilePath, 'w+', encoding='utf-8') as f:
+        '''self.filePath = self.ui.remark_lE_path.text()
+        # self.filePath = './data.csv'
+        with codecs.open(self.filePath, 'w+', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(self.columns)
             for row in range(self.ui.remark_lW_list.rowCount()):

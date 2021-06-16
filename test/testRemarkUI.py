@@ -7,8 +7,8 @@ from PyQt5 import QtCore
 from PyQt5 import QtTest
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import sys
-import code.Remark
-import code.MainUI
+import codes.Remark
+import codes.MainUI
 
 class TestRemark(unittest.TestCase):
     def setUp(self):
@@ -62,7 +62,7 @@ class TestRemark(unittest.TestCase):
 
     # 测试标签读取
     def test_read_json(self):
-        self.assertEqual(code.Remark.read_json("./test_data.json")['3'], ["111", "222", "444"])
+        self.assertEqual(codes.Remark.read_json("./test_data.json")['3'], ["111", "222", "444"])
 
 
 if __name__ == '__main__':

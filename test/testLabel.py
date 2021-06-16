@@ -6,8 +6,8 @@ from PyQt5 import QtTest
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import sys
 
-import code.Label
-import code.MainUI
+import codes.Label
+import codes.MainUI
 
 class TestRemark(unittest.TestCase):
     def setUp(self):
