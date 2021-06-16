@@ -6,7 +6,7 @@ import pandas as pd
 class FileIO():
     def __init__(self):
         self.filePath = frozen_dir.app_path() + '\\data.csv'
-        print(self.filePath)
+        #print(self.filePath)
         self.jsonPath = frozen_dir.app_path() + '\\LabelClass.json'
 
     def readFile(self, path):
@@ -35,7 +35,7 @@ class FileIO():
 
     def readCsv(self, path):
         '''读取csv转为字典'''
-        print(path)
+        #print(path)
         # 读取标签数据
         labelClassDict = self.readJson()
 
@@ -49,12 +49,12 @@ class FileIO():
         # if not os.path.exists(path):
         # else:
         #    oldData = pd.read_csv(path)
-        print(oldData)
+        #print(oldData)
 
         # 针对原有数据，对修改后的标签进行添加
         for labelClass in labelClassDict.keys():
-            print(labelClass)
-            print(oldData.columns.values.tolist())
+            #print(labelClass)
+            #print(oldData.columns.values.tolist())
             if labelClass not in oldData.columns.values.tolist():
                 oldData[labelClass] = '待标注'
         # 覆盖写回
@@ -64,10 +64,10 @@ class FileIO():
 
     def writeCsv(self, path, dataDict):
         '''把字典写入csv'''
-        print(path)
+        #print(path)
         # 将数据转化为dataframe
         newData = pd.DataFrame(dataDict)
-        print(newData)
+        #print(newData)
 
         # 读取标签数据
         labelClassDict = self.readJson()
@@ -77,7 +77,7 @@ class FileIO():
             oldData = pd.DataFrame()
         else:
             oldData = pd.read_csv(path)
-        print(oldData)
+        #print(oldData)
 
         # 针对原有数据，对修改后的标签进行添加
         for labelClass in labelClassDict.keys():
