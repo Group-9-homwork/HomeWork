@@ -1,15 +1,14 @@
-import frozen_dir
-from Spider import *
+# from code.Spider import *
 import pandas as pd
-
+import os
+import json
 
 class FileIO():
     def __init__(self):
-        self.filePath = frozen_dir.app_path() + '\\data.csv'
-        #print(self.filePath)
-        self.jsonPath = frozen_dir.app_path() + '\\LabelClass.json'
+        self.jsonPath = os.getcwd() + '\\LabelClass.json'
+        print(self.jsonPath)
 
-    def readFile(self, path):
+    '''def readFile(self, path):
         if path:
             self.filePath = path
         # 判断文件是否存在。。。
@@ -27,11 +26,11 @@ class FileIO():
         for content in contents:
             tmp.append(content)
 
-            '''with open(path, 'a+') as f:
+            # with open(path, 'a+') as f:
                 for content in contents:
                     # f.write( f'{content.userName},{content.text}, {content.source}, {content.created_at}, {content.retweet_count},{content.reply_count}, {content.reward_count}, {content.fav_count}\n')
-                    f.write( f'{content.text}\n')'''
-            return None
+                    f.write( f'{content.text}\n')
+            return None'''
 
     def readCsv(self, path):
         '''读取csv转为字典'''

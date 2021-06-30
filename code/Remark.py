@@ -193,6 +193,8 @@ class RemarkModule:
         '''保存文件'''
         saveFilePath, _  = QFileDialog.getSaveFileName(None, "保存文件", self.filePath,
                                     "文件类型 (*.csv)")
+        if saveFilePath == '':
+            return
         print(saveFilePath)
         # 通过pandas保存
         # 读取原有的数据

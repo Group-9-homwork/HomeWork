@@ -9,7 +9,7 @@ import os
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPainter, QBrush, QColor
 from PyQt5.QtWidgets import QInputDialog, QLineEdit, QWidget, QTableWidgetItem, QFileDialog,QMessageBox
-from File import FileIO
+from code.File import FileIO
 
 CONSTANT = ""
 """def file_selector():
@@ -88,11 +88,11 @@ class ManageModule:
 
     # 文件选择获取路径，根据路径打开csv按列每行到list,list每行模板， list->csv
     def commentInit(self):
-
         # 判断三个路径是否全部存在且正确
         filePath1 = self.ui.remark_lE_path_3.text()  # 获取比较文件1的路径
         filePath2 = self.ui.remark_lE_path_4.text()  # 获取比较文件2的路径
         filePath = self.ui.remark_lE_path_2.text()  # 获取综合文件的路径
+        # print(filePath1 + '\n' + filePath2 + '\n' + filePath + '\n')
         # 判断文件路径是否正确
         if not re.search('^((?:[a-zA-Z]:)?\/(?:[^\\\?\/\*\|<>:"]+\/)+)', filePath1):
             return
@@ -102,7 +102,6 @@ class ManageModule:
             return
         if not (re.search('\.csv$', filePath1) and re.search('\.csv$', filePath2) and re.search('\.csv$', filePath)):
             return
-
         f = open(filePath, 'a+')  # 如果不存在则创建一个
         f.close()
 
@@ -144,10 +143,17 @@ class ManageModule:
             self.dfFile['时间'] = dfF1AndF2['时间_x']
             self.dfFile['评论'] = dfF1AndF2['评论']
             for colNums in self.LabelClassDict.keys():
+                # print(colNums)
                 dfFile1[colNums] = dfF1AndF2[colNums + '_x']
                 dfFile2[colNums] = dfF1AndF2[colNums + '_y']
-                dfFile[colNums] = '待标注'
-                self.dfFile[colNums] = '待标注'
+                dfFile[colNums] = dfF1AndF2[colNums + '_x']  # 都是1的
+                self.dfFile[colNums] = dfF1AndF2[colNums + '_x']  # 都是1的
+                for i in range(0, self.dfFile.shape[0]):
+                    # print('\t' + dfFile.iloc[i][colNums] + '\t' + dfFile2.iloc[i][colNums])
+                    if dfFile.iloc[i][colNums] != dfFile2.iloc[i][colNums]:  # 和2不同
+                        # print(i)
+                        dfFile.loc[i, colNums] = '待标注'
+                        self.dfFile.loc[i, colNums] = '待标注'
         else:
             self.time = dfF1AndF2['时间_x'].tolist()
             tmp = pd.merge(dfF1AndF2, self.dfFileTmp, left_on='评论', right_on='评论', how='left')
@@ -274,7 +280,7 @@ class ManageModule:
             self.ui.remark_lW_list_2.selectRow(cur + 1)
 
     # 显示当前评论
-    def item_click(self, item):
+    def item_click(self):
         # print (str(item.text()))
         cur = self.ui.remark_lW_list_2.currentRow()
         # self.ui.remark_lW_message.addItem(str(item.text()))

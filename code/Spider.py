@@ -9,7 +9,7 @@ import pandas as pd
 import threading
 import os
 
-from File import FileIO
+from code.File import FileIO
 import GlobalValues as gv
 from PyQt5.QtWidgets import QFileDialog
 
