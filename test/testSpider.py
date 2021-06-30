@@ -19,7 +19,7 @@ class MyTestCase(unittest.TestCase):
         result = a.spiderStart(0)
         self.assertEqual(result, 1)'''
 
-    def test_startCrawler(self):
+    def testStartCrawler(self):
         app = QApplication(sys.argv)
         mainWindow = QMainWindow()
         ui = MainUI.Ui_MainWindow()
@@ -50,7 +50,7 @@ class MyTestCase(unittest.TestCase):
         result = a.printData(ui, 1)
         self.assertEqual(result, 1)'''
 
-    def test_getUrl(self):
+    def testGetUrl(self):
         app = QApplication(sys.argv)
         mainWindow = QMainWindow()
         ui = MainUI.Ui_MainWindow()
@@ -64,7 +64,7 @@ class MyTestCase(unittest.TestCase):
         str = spider.getUrl(pageNum)
         self.assertEqual(str, url)
 
-    def test_getPage(self):
+    def testGetPage(self):
         app = QApplication(sys.argv)
         mainWindow = QMainWindow()
         ui = MainUI.Ui_MainWindow()
@@ -77,7 +77,7 @@ class MyTestCase(unittest.TestCase):
         b = {}
         self.assertEqual(type(page), type(b))
 
-    def test_parse(self):
+    def testParse(self):
         app = QApplication(sys.argv)
         mainWindow = QMainWindow()
         ui = MainUI.Ui_MainWindow()

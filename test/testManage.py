@@ -22,7 +22,7 @@ class TestManage(unittest.TestCase):
         self.manage.manageStart()
 
     # 保存
-    def test_saveFile(self):
+    def testSaveFile(self):
         self.ui.remark_lE_path_3.setText(os.path.realpath('data11.csv').replace("\\", "/"))
         self.ui.remark_lE_path_4.setText(os.path.realpath('data22.csv').replace("\\", "/"))
         self.ui.remark_lE_path_2.setText(os.path.realpath('data33.csv').replace("\\", "/"))
@@ -41,7 +41,7 @@ class TestManage(unittest.TestCase):
         self.manage.yes_click()
 
     # 选择上一个评论
-    def test_preComment(self):
+    def testPreComment(self):
         self.ui.remark_lE_path_3.setText(os.path.realpath('data11.csv').replace("\\", "/"))
         self.ui.remark_lE_path_4.setText(os.path.realpath('data22.csv').replace("\\", "/"))
         self.ui.remark_lE_path_2.setText(os.path.realpath('data33.csv').replace("\\", "/"))
@@ -51,7 +51,7 @@ class TestManage(unittest.TestCase):
         self.assertEqual(self.ui.remark_lW_message_2.toPlainText(), "绝味食品，泰格医药，药明康德，安图生物。新产业，逢低吸")
 
     # 选择下一个评论
-    def test_nextComment(self):
+    def testNextComment(self):
         self.ui.remark_lE_path_3.setText(os.path.realpath('data11.csv').replace("\\", "/"))
         self.ui.remark_lE_path_4.setText(os.path.realpath('data22.csv').replace("\\", "/"))
         self.ui.remark_lE_path_2.setText(os.path.realpath('data33.csv').replace("\\", "/"))
@@ -61,7 +61,7 @@ class TestManage(unittest.TestCase):
         self.assertEqual(self.ui.remark_lW_message_2.toPlainText(), "绝味食品今天要创反弹以来的收盘最高价，68一路上来！并再次形成买点。")
 
     # 删除
-    def test_delComment(self):
+    def testDelComment(self):
         self.ui.remark_lE_path_3.setText(os.path.realpath('data11.csv').replace("\\", "/"))
         self.ui.remark_lE_path_4.setText(os.path.realpath('data22.csv').replace("\\", "/"))
         self.ui.remark_lE_path_2.setText(os.path.realpath('data33.csv').replace("\\", "/"))
@@ -71,7 +71,7 @@ class TestManage(unittest.TestCase):
         self.assertEqual(self.ui.remark_lW_list_2.item(2, 3).text(), "待标注")
 
     # 标注
-    def test_remComment(self):
+    def testRemComment(self):
         self.ui.remark_lE_path_3.setText(os.path.realpath('data11.csv').replace("\\", "/"))
         self.ui.remark_lE_path_4.setText(os.path.realpath('data22.csv').replace("\\", "/"))
         self.ui.remark_lE_path_2.setText(os.path.realpath('data33.csv').replace("\\", "/"))
@@ -91,7 +91,7 @@ class TestManage(unittest.TestCase):
         self.ui.remark_lW_list_2.item(1, 1).textColor()'''
 
     # 显示当前评论
-    def test_itemClick(self):
+    def testItemClick(self):
         self.ui.remark_lE_path_3.setText(os.path.realpath('data11.csv').replace("\\", "/"))
         self.ui.remark_lE_path_4.setText(os.path.realpath('data22.csv').replace("\\", "/"))
         self.ui.remark_lE_path_2.setText(os.path.realpath('data33.csv').replace("\\", "/"))
@@ -102,7 +102,7 @@ class TestManage(unittest.TestCase):
         self.assertEqual(self.ui.remark_lW_message_2.toPlainText(), " 有止跌趋势 该反弹了 加仓起")
 
     # 表格初始化
-    def test_initTable(self):
+    def testInitTable(self):
         self.manage.TableInit()
         # QtTest.QTest.mouseClick(self.ui.remark_pB_save_2, QtCore.Qt.LeftButton)
         self.assertEqual(self.ui.remark_lW_list_2.horizontalHeaderItem(0).text(), "评论")
@@ -111,7 +111,7 @@ class TestManage(unittest.TestCase):
         self.assertEqual(self.ui.remark_lW_list_2.horizontalHeaderItem(3).text(), "是否与股票相关")
 
     # 评论初始化
-    def test_initComment(self):
+    def testInitComment(self):
         self.ui.remark_lE_path_3.setText(os.path.realpath('data11.csv').replace("\\", "/"))
         self.ui.remark_lE_path_4.setText(os.path.realpath('data22.csv').replace("\\", "/"))
         self.ui.remark_lE_path_2.setText(os.path.realpath('data33.csv').replace("\\", "/"))
@@ -122,14 +122,14 @@ class TestManage(unittest.TestCase):
         self.assertEqual(self.ui.remark_lW_list_2.item(7, 3).text(), "与股票相关")
 
     # 标签初始化
-    def test_initLabel(self):
+    def testInitLabel(self):
         self.manage.initLabel()
         # QtTest.QTest.mouseClick(self.ui.remark_cB_class_2, QtCore.Qt.LeftButton)
         self.ui.remark_cB_class_2.setCurrentIndex(1)
         self.assertEqual(self.ui.remark_cB_class_2.currentText(), "评论类型")
 
     # 更新标签显示列表
-    def test_labelList(self):
+    def testLabelList(self):
         # QtTest.QTest.mouseClick(self.ui.remark_cB_class_2, QtCore.Qt.LeftButton)
         self.ui.remark_cB_class_2.setCurrentIndex(1)
         self.manage.comboBox_label_choose()
@@ -137,7 +137,7 @@ class TestManage(unittest.TestCase):
         self.assertEqual(self.ui.remark_lW_label_2.currentItem().text(), "中性")
 
     # 打开文件
-    def test_openFile(self):
+    def testOpenFile(self):
         # QtTest.QTest.mouseClick(self.ui.remark_pB_open_3, QtCore.Qt.LeftButton)
         FilePath = os.path.realpath('data11.csv').replace("\\", "/")
         self.ui.remark_lE_path_3.setText(FilePath)

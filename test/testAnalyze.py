@@ -8,7 +8,7 @@ from codes import MainUI
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 class MyTestCase(unittest.TestCase):
-    def test_initData(self):
+    def testInitData(self):
         app = QApplication(sys.argv)
         mainWindow = QMainWindow()
         ui = MainUI.Ui_MainWindow()
@@ -19,7 +19,7 @@ class MyTestCase(unittest.TestCase):
         result = a.initData(flag=0)
         self.assertEqual(result, 1)
 
-    def test_analyzeStart(self):
+    def testAnalyzeStart(self):
         app = QApplication(sys.argv)
         mainWindow = QMainWindow()
         ui = MainUI.Ui_MainWindow()
@@ -29,7 +29,7 @@ class MyTestCase(unittest.TestCase):
         result = a.analyzeStart()
         self.assertEqual(result, 1)
 
-    def test_openFile(self):
+    def testOpenFile(self):
         app = QApplication(sys.argv)
         mainWindow = QMainWindow()
         ui = MainUI.Ui_MainWindow()
@@ -39,7 +39,7 @@ class MyTestCase(unittest.TestCase):
         result = a.openFile()
         self.assertEqual(result, 1)
 
-    def test_chooseClass(self):
+    def testChooseClass(self):
         app = QApplication(sys.argv)
         mainWindow = QMainWindow()
         ui = MainUI.Ui_MainWindow()
